@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 use App\Models\Tenant\TemplateSetting;
 
 class HomeController extends Controller
@@ -13,22 +14,24 @@ class HomeController extends Controller
         $settings = TemplateSetting::current();
         $clubFifaId = $settings->club_fifa_id ?? 396; // Default to NK Naprijed
 
-        // Get next upcoming match
+        // Get next upcoming SENIORS match
         $nextMatch = DB::table('comet_matches')
-            ->where(function($query) use ($clubFifaId) {
+            ->where(function ($query) use ($clubFifaId) {
                 $query->where('team_fifa_id_home', $clubFifaId)
                       ->orWhere('team_fifa_id_away', $clubFifaId);
             })
+            ->where('age_category', 'SENIORS')
             ->where('date_time_local', '>=', now())
             ->orderBy('date_time_local', 'asc')
             ->first();
 
-        // Get last completed match
+        // Get last completed SENIORS match
         $lastMatch = DB::table('comet_matches')
-            ->where(function($query) use ($clubFifaId) {
+            ->where(function ($query) use ($clubFifaId) {
                 $query->where('team_fifa_id_home', $clubFifaId)
                       ->orWhere('team_fifa_id_away', $clubFifaId);
             })
+            ->where('age_category', 'SENIORS')
             ->where('date_time_local', '<', now())
             ->whereNotNull('team_score_home')
             ->whereNotNull('team_score_away')
@@ -45,12 +48,13 @@ class HomeController extends Controller
                 ->get();
         }
 
-        // Get last 6 completed matches
+        // Get last 6 completed SENIORS matches
         $recentResults = DB::table('comet_matches')
-            ->where(function($query) use ($clubFifaId) {
+            ->where(function ($query) use ($clubFifaId) {
                 $query->where('team_fifa_id_home', $clubFifaId)
                       ->orWhere('team_fifa_id_away', $clubFifaId);
             })
+            ->where('age_category', 'SENIORS')
             ->where('date_time_local', '<', now())
             ->whereNotNull('team_score_home')
             ->whereNotNull('team_score_away')
@@ -58,22 +62,68 @@ class HomeController extends Controller
             ->limit(6)
             ->get();
 
-        // Get current league standings
-        $standings = DB::table('comet_rankings')
-            ->orderBy('position', 'asc')
-            ->limit(20)
-            ->get();
+        // Determine seniors league competition for our club
+        $mySeniorsRanking = DB::table('comet_rankings')
+            ->where('team_fifa_id', $clubFifaId)
+            ->where('age_category', 'SENIORS')
+            ->orderByDesc('matches_played') // prioritize active league
+            ->first();
 
-        // Get top scorers from comet_top_scorers table
-        $topScorers = DB::table('comet_top_scorers')
-            ->where('club_id', $clubFifaId)
-            ->orderBy('goals', 'desc')
-            ->select(
-                DB::raw("CONCAT(international_first_name, ' ', international_last_name) as player_name"),
-                'goals'
-            )
-            ->limit(10)
-            ->get();
+        $standings = collect();
+        $standingsCompetitionId = null;
+        if ($mySeniorsRanking) {
+            $standingsCompetitionId = $mySeniorsRanking->competition_fifa_id;
+            $standings = DB::table('comet_rankings')
+                ->where('competition_fifa_id', $standingsCompetitionId)
+                ->orderBy('position', 'asc')
+                ->get();
+        }
+
+        // Current or next matchday (SENIORS)
+        $matchday = null;
+        $matchdayCompetitionId = null;
+        $matchdayMatches = collect();
+        $matchdayLabel = null;
+
+        if ($nextMatch) {
+            $matchday = $nextMatch->match_day;
+            $matchdayCompetitionId = $nextMatch->competition_fifa_id;
+            $matchdayLabel = __('Nächster Spieltag');
+        } elseif ($lastMatch) {
+            $matchday = $lastMatch->match_day;
+            $matchdayCompetitionId = $lastMatch->competition_fifa_id;
+            $matchdayLabel = __('Letzter Spieltag');
+        } elseif ($mySeniorsRanking) {
+            // Fallback to ranking competition current round (if any)
+            $matchdayCompetitionId = $mySeniorsRanking->competition_fifa_id;
+        }
+
+        if ($matchdayCompetitionId && $matchday) {
+            $matchdayMatches = DB::table('comet_matches')
+                ->where('competition_fifa_id', $matchdayCompetitionId)
+                ->where('age_category', 'SENIORS')
+                ->where('match_day', $matchday)
+                ->orderBy('date_time_local', 'asc')
+                ->get();
+        }
+
+        // Get top scorers (optional table)
+        $topScorers = collect();
+        try {
+            if (Schema::connection('tenant')->hasTable('comet_top_scorers')) {
+                $topScorers = DB::table('comet_top_scorers')
+                    ->where('club_id', $clubFifaId)
+                    ->orderBy('goals', 'desc')
+                    ->select(
+                        DB::raw("CONCAT(international_first_name, ' ', international_last_name) as player_name"),
+                        'goals'
+                    )
+                    ->limit(10)
+                    ->get();
+            }
+        } catch (\Throwable $e) {
+            $topScorers = collect();
+        }
 
         // News (placeholder for future implementation)
         $news = collect();
@@ -96,6 +146,10 @@ class HomeController extends Controller
             'lastMatchEvents',
             'recentResults',
             'standings',
+            'standingsCompetitionId',
+            'matchday',
+            'matchdayMatches',
+            'matchdayLabel',
             'topScorers',
             'news'
         ));

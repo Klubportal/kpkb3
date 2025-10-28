@@ -71,11 +71,11 @@ Route::get('/landing', App\Livewire\Central\LandingPage::class)->name('landing')
 // News Routes
 Route::get('/news', function () {
     return 'News Liste - coming soon';
-})->name('news.index');
+})->name('central.news.index');
 
 Route::get('/news/{slug}', function ($slug) {
     return "News Detail: {$slug} - coming soon";
-})->name('news.show');
+})->name('central.news.show');
 
 // Domain Verification Routes
 Route::get('/verify-domain/{token}', [DomainVerificationController::class, 'verify'])

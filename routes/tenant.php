@@ -148,11 +148,11 @@ Route::controller(FrontendController::class)->group(function () {
 // ========================================
 
 // Homepage
-Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('tenant.home');
 
 // News Routes
-Route::get('/news', [App\Http\Controllers\NewsController::class, 'index'])->name('news.index');
-Route::get('/news/{slug}', [App\Http\Controllers\NewsController::class, 'show'])->name('news.show');
+Route::get('/news', [App\Http\Controllers\NewsController::class, 'index'])->name('tenant.news.index');
+Route::get('/news/{slug}', [App\Http\Controllers\NewsController::class, 'show'])->name('tenant.news.show');
 
 // Template Pages
 Route::get('/raspored', function () {
