@@ -1,0 +1,45 @@
+========================================
+HOSTS-DATEI SCHNELL AKTUALISIEREN
+========================================
+
+SCHRITT 1: PowerShell als Administrator öffnen
+-----------------------------------------------
+• Windows-Taste + X drücken
+• "Windows PowerShell (Administrator)" wählen
+
+SCHRITT 2: Diesen Befehl kopieren & einfügen
+-----------------------------------------------
+
+Add-Content -Path C:\Windows\System32\drivers\etc\hosts -Value "`n127.0.0.1       testclub.localhost" -Force
+
+
+SCHRITT 3: Prüfen ob es funktioniert
+---------------------------------------
+
+Get-Content C:\Windows\System32\drivers\etc\hosts | Select-String "testclub"
+
+(Sollte anzeigen: 127.0.0.1       testclub.localhost)
+
+
+SCHRITT 4: Verbindung testen
+------------------------------
+
+ping testclub.localhost
+
+(Sollte antworten: Antwort von 127.0.0.1)
+
+
+========================================
+DANACH HIER WEITERMACHEN:
+========================================
+
+1. Cache leeren:
+   php artisan optimize:clear
+
+2. Server neu starten:
+   php artisan serve
+
+3. Browser öffnen:
+   http://testclub.localhost:8000/club
+
+========================================

@@ -1,0 +1,77 @@
+@import '../../../../vendor/filament/filament/resources/css/theme.css';
+
+@config '../../../../tailwind.config.js';
+
+/* 🎨 Schwarz-Rot Login Page Styling */
+.fi-simple-layout {
+    background: linear-gradient(135deg, #1a1a1a 0%, #8b0000 100%);
+}
+
+.fi-simple-main {
+    backdrop-filter: blur(10px);
+}
+
+.fi-simple-main-ctn {
+    background-color: white;
+    border-radius: 1rem;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.dark .fi-simple-main-ctn {
+    background-color: rgb(17 24 39);
+}
+
+/* Logo Styling */
+.fi-logo {
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 2rem;
+    filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.1));
+}
+
+/* Form Inputs Modern Style */
+.fi-input {
+    border-radius: 0.5rem;
+    border-color: rgb(209 213 219);
+    transition: all 0.2s;
+}
+
+.dark .fi-input {
+    border-color: rgb(55 65 81);
+}
+
+.fi-input:focus {
+    border-color: rgb(220 38 38);
+    box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1);
+    transform: translateY(-1px);
+}
+
+/* Button Schwarz-Rot Style */
+.fi-btn-primary {
+    background: linear-gradient(to right, rgb(220 38 38), rgb(153 27 27));
+    box-shadow: 0 10px 15px -3px rgba(220, 38, 38, 0.3);
+    transition: all 0.2s;
+}
+
+.fi-btn-primary:hover {
+    background: linear-gradient(to right, rgb(185 28 28), rgb(127 29 29));
+    box-shadow: 0 20px 25px -5px rgba(220, 38, 38, 0.4);
+    transform: translateY(-2px);
+}
+
+/* Animation for page load */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.fi-simple-main-ctn {
+    animation: fadeInUp 0.5s ease-out;
+}

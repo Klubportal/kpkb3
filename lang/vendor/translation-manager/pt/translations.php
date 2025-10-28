@@ -1,0 +1,26 @@
+<?php
+
+return [
+    'translation-navigation-label' => 'Gestor de tradução',
+    'translation-label' => 'Tradução|Traduções',
+    'group' => 'Grupo de tradução',
+    'key' => 'Chave de tradução',
+    'preview-in-your-lang' => 'Pré-visualização no seu idioma atual (:lang)',
+    'synchronize' => 'Sincronizar',
+    'synchronization-success' => 'Sincronizado :count traduções!',
+    'synchronization-deleted' => 'Excluído :count traduções não utilizadas',
+    'preview' => 'Pré-visualização',
+    'preview-description' => 'Este é um exemplo no idioma atualmente selecionado (:lang)',
+    'add-translation-button' => 'Adicionar nova tradução',
+    'translations-header' => 'Traduções',
+    'translation-language' => 'Idioma',
+    'translation-text' => 'Texto traduzido',
+    'filter-not-translated' => 'Não traduzido para',
+    'quick-translate' => 'Tradução rápida',
+    'quick-translate-select-locale' => 'Selecione o idioma',
+    'quick-translate-translation-number' => ':total traduções restantes para traduzir',
+    'quick-translate-skip' => 'Pular esta tradução',
+    'quick-translate-enter' => 'Digite a tradução em ":lang":',
+    'quick-translate-save-and-continue' => 'Salvar e continuar',
+    'quick-translate-nothing' => 'Nada mais para traduzir!',
+];

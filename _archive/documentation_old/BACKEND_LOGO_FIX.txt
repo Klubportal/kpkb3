@@ -1,0 +1,93 @@
+✅ BACKEND LOGO FIX - ZUSAMMENFASSUNG
+=====================================
+
+## Problem
+Das Logo wird im Filament Backend nicht angezeigt:
+- ❌ Nicht in der Tabellen-Ansicht (ImageColumn)
+- ❌ Nicht in der Formular-Vorschau (FileUpload)
+
+## Ursache
+Filament verwendet intern standardmäßig `asset()` für URL-Generierung, was für
+Multi-Tenancy mit Subdomains nicht funktioniert.
+
+asset() generiert: http://localhost:8000/storage/logos/...
+Benötigt wird:     http://nknapijed.localhost:8000/storage/logos/...
+
+## Lösung
+
+### 1. FileUpload - Vorschau im Formular
+Datei: app/Filament/Club/Resources/TemplateSettingResource.php
+
+```php
+FileUpload::make('logo')
+    ->label('Logo')
+    ->image()
+    ->disk('public')
+    ->visibility('public')
+    ->directory('logos')
+    ->imageEditor()
+    ->maxSize(5120)
+    ->getUploadedFileUrlUsing(function ($file) {
+        if (is_string($file)) {
+            return '/storage/' . $file;
+        }
+        return null;
+    }),
+```
+
+### 2. ImageColumn - Anzeige in Tabelle
+Datei: app/Filament/Club/Resources/TemplateSettingResource.php
+
+```php
+Tables\Columns\ImageColumn::make('logo')
+    ->label('Logo')
+    ->disk('public')
+    ->visibility('public')
+    ->getStateUsing(function ($record) {
+        return $record->logo ? '/storage/' . $record->logo : null;
+    }),
+```
+
+## Warum relative URLs?
+- `/storage/logos/...` funktioniert automatisch für alle Tenant-Subdomains
+- Keine Hardcodierung von Domain-Namen
+- Browser ergänzt automatisch die aktuelle Domain
+
+## Test-Seite
+Erstellt: public/test-logo-display.php
+
+Aufruf: http://nknapijed.localhost:8000/test-logo-display.php
+Zeigt 4 verschiedene URL-Generierungsmethoden und welche funktionieren.
+
+## Testen
+
+### Backend Tabelle:
+http://nknapijed.localhost:8000/club/template-settings
+→ Logo sollte in der Tabelle erscheinen
+
+### Backend Formular:
+http://nknapijed.localhost:8000/club/template-settings/1/edit
+→ Logo sollte als Vorschau unter dem Upload-Feld erscheinen
+
+### Frontend:
+http://nknapijed.localhost:8000/
+→ Logo sollte in der Navbar erscheinen
+
+## Wenn Logo immer noch nicht erscheint:
+1. Browser-Cache vollständig leeren (Strg+Shift+Del)
+2. Browser DevTools öffnen (F12)
+3. Network Tab öffnen
+4. Seite neu laden
+5. Nach "logo" oder "01K8KSS023SW8CYGG1QM6G5GZG.png" suchen
+6. Status Code prüfen:
+   - 200 = OK, Bild wird geladen
+   - 404 = Route nicht gefunden
+   - 403 = Zugriff verweigert
+
+## Änderungen Zusammenfassung
+✅ FileUpload verwendet jetzt relative URLs für Vorschau
+✅ ImageColumn verwendet jetzt relative URLs für Tabellen-Anzeige
+✅ Frontend Templates verwenden relative URLs
+✅ Storage Route registriert: /storage/{path}
+
+Status: Alle Änderungen implementiert und getestet.

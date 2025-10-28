@@ -1,0 +1,23 @@
+/* Filament FileUpload - Ensure delete button is visible */
+.fi-fo-file-upload-file-actions button[type="button"] {
+    opacity: 1 !important;
+    visibility: visible !important;
+    display: inline-flex !important;
+}
+
+/* Make delete button more prominent */
+.fi-fo-file-upload-file-remove-btn {
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+/* Responsive improvements for Filament forms */
+@media (max-width: 640px) {
+    .fi-section-content-ctn {
+        padding: 1rem !important;
+    }
+
+    .fi-fo-field-wrp {
+        margin-bottom: 1rem !important;
+    }
+}

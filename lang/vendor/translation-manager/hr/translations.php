@@ -1,0 +1,26 @@
+<?php
+
+return [
+    'translation-navigation-label' => 'Upravitelj prijevoda',
+    'translation-label' => 'Prijevod|Prijevodi',
+    'group' => 'Grupa prijevoda',
+    'key' => 'Ključ prijevoda',
+    'preview-in-your-lang' => 'Pregled na vašem trenutnom jeziku (:lang)',
+    'synchronize' => 'Sinkroniziraj',
+    'synchronization-success' => 'Sinkronizirano :count prijevoda!',
+    'synchronization-deleted' => 'Izbrisano :count neiskorištenih prijevoda',
+    'preview' => 'Pregled',
+    'preview-description' => 'Ovo je primjer na trenutno odabranom jeziku (:lang)',
+    'add-translation-button' => 'Dodaj novi prijevod',
+    'translations-header' => 'Prijevodi',
+    'translation-language' => 'Jezik',
+    'translation-text' => 'Prevedeni tekst',
+    'filter-not-translated' => 'Nije prevedeno na',
+    'quick-translate' => 'Brzi prijevod',
+    'quick-translate-select-locale' => 'Odaberite jezik',
+    'quick-translate-translation-number' => 'Preostalo :total prijevoda za prevesti',
+    'quick-translate-skip' => 'Preskoči ovaj prijevod',
+    'quick-translate-enter' => 'Unesite prijevod na ":lang":',
+    'quick-translate-save-and-continue' => 'Spremi i nastavi',
+    'quick-translate-nothing' => 'Nema više prijevoda za prevesti!',
+];

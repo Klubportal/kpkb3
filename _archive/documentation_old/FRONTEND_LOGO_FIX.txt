@@ -1,0 +1,37 @@
+✅ FRONTEND LOGO FIX - ZUSAMMENFASSUNG
+=====================================
+
+## Problem
+Das Logo wurde im Backend hochgeladen, aber nicht im Frontend angezeigt.
+
+## Ursache
+Die Templates verwendeten `asset('storage/' . $settings->logo)`, was eine
+zentrale URL generierte:
+  ❌ http://localhost:8000/storage/logos/...
+
+Statt der korrekten Tenant-URL:
+  ✅ http://nknapijed.localhost:8000/storage/logos/...
+
+## Lösung
+Templates geändert zu relativen URLs: `/storage/{{ $settings->logo }}`
+
+Dies funktioniert für alle Tenant-Subdomains automatisch.
+
+## Geänderte Dateien
+1. resources/views/templates/bm/partials/navbar.blade.php
+2. resources/views/templates/kp/partials/navbar.blade.php
+
+## Logo-Informationen
+- Pfad in DB: logos/01K8KSS023SW8CYGG1QM6G5GZG.png
+- Dateigröße: 355.60 KB
+- Hochgeladen: 2025-10-27 21:39:19
+
+## Testen
+1. Öffnen Sie: http://nknapijed.localhost:8000/
+2. Das Logo sollte in der Navbar erscheinen
+3. Bei Problemen: Browser-Cache leeren (Strg+Shift+R)
+
+## Direkt-URL zum Logo
+http://nknapijed.localhost:8000/storage/logos/01K8KSS023SW8CYGG1QM6G5GZG.png
+
+✅ Logo sollte jetzt sowohl im Backend als auch im Frontend funktionieren!
