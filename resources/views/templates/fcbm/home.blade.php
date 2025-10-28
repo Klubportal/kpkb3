@@ -277,7 +277,14 @@
                             @php($isClub = $clubId && (int)$row->team_fifa_id === (int)$clubId)
                             <tr class="border-b hover:bg-gray-50 {{ $isClub ? 'bg-primary/5' : '' }}">
                                 <td class="py-4 px-6 font-bold {{ $isClub ? 'text-primary' : '' }}">{{ $row->position }}</td>
-                                <td class="py-4 px-6 {{ $isClub ? 'font-bold text-primary' : '' }}">{{ $row->international_team_name }}</td>
+                                <td class="py-4 px-6 {{ $isClub ? 'font-bold text-primary' : '' }}">
+                                    <div class="flex items-center gap-3">
+                                        @if($row->team_image_logo)
+                                            <img src="{{ $row->team_image_logo }}" alt="{{ $row->international_team_name }}" class="w-8 h-8 object-contain">
+                                        @endif
+                                        <span>{{ $row->international_team_name }}</span>
+                                    </div>
+                                </td>
                                 <td class="py-4 px-6 text-center hidden md:table-cell">{{ $row->matches_played }}</td>
                                 <td class="py-4 px-6 text-center hidden md:table-cell">{{ $row->wins }}</td>
                                 <td class="py-4 px-6 text-center hidden md:table-cell">{{ $row->draws }}</td>

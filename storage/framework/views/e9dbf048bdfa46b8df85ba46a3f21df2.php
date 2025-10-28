@@ -277,7 +277,14 @@
                             <?php ($isClub = $clubId && (int)$row->team_fifa_id === (int)$clubId); ?>
                             <tr class="border-b hover:bg-gray-50 <?php echo e($isClub ? 'bg-primary/5' : ''); ?>">
                                 <td class="py-4 px-6 font-bold <?php echo e($isClub ? 'text-primary' : ''); ?>"><?php echo e($row->position); ?></td>
-                                <td class="py-4 px-6 <?php echo e($isClub ? 'font-bold text-primary' : ''); ?>"><?php echo e($row->international_team_name); ?></td>
+                                <td class="py-4 px-6 <?php echo e($isClub ? 'font-bold text-primary' : ''); ?>">
+                                    <div class="flex items-center gap-3">
+                                        <?php if($row->team_image_logo): ?>
+                                            <img src="<?php echo e($row->team_image_logo); ?>" alt="<?php echo e($row->international_team_name); ?>" class="w-8 h-8 object-contain">
+                                        <?php endif; ?>
+                                        <span><?php echo e($row->international_team_name); ?></span>
+                                    </div>
+                                </td>
                                 <td class="py-4 px-6 text-center hidden md:table-cell"><?php echo e($row->matches_played); ?></td>
                                 <td class="py-4 px-6 text-center hidden md:table-cell"><?php echo e($row->wins); ?></td>
                                 <td class="py-4 px-6 text-center hidden md:table-cell"><?php echo e($row->draws); ?></td>

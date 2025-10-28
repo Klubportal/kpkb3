@@ -19,8 +19,7 @@ CREATE TABLE `domains` (
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `domains_domain_unique` (`domain`),
-  KEY `domains_tenant_id_foreign` (`tenant_id`),
-  CONSTRAINT `domains_tenant_id_foreign` FOREIGN KEY (`tenant_id`) REFERENCES `tenants` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+  KEY `domains_tenant_id_index` (`tenant_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
 SQL
         );
