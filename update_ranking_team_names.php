@@ -21,23 +21,44 @@ $rankings = DB::connection('central')
 $updated = 0;
 
 foreach ($rankings as $ranking) {
-    $club = DB::connection('central')
-        ->table('comet_clubs_extended')
-        ->where('club_fifa_id', $ranking->team_fifa_id)
+    // Try to find team name from matches (as home team)
+    $match = DB::connection('central')
+        ->table('comet_matches')
+        ->where('team_fifa_id_home', $ranking->team_fifa_id)
+        ->whereNotNull('team_name_home')
         ->first();
-
-    if ($club && $club->name) {
+    
+    $teamName = null;
+    
+    if ($match && $match->team_name_home) {
+        $teamName = $match->team_name_home;
+    } else {
+        // Try as away team
+        $match = DB::connection('central')
+            ->table('comet_matches')
+            ->where('team_fifa_id_away', $ranking->team_fifa_id)
+            ->whereNotNull('team_name_away')
+            ->first();
+        
+        if ($match && $match->team_name_away) {
+            $teamName = $match->team_name_away;
+        }
+    }
+    
+    if ($teamName && $teamName !== 'Unknown') {
         DB::connection('central')
             ->table('comet_rankings')
             ->where('id', $ranking->id)
-            ->update(['international_team_name' => $club->name]);
+            ->update(['international_team_name' => $teamName]);
         $updated++;
+        
+        if ($updated % 10 == 0) {
+            echo "  Progress: {$updated} rankings updated...\n";
+        }
     }
 }
 
-echo "  ✅ {$updated} Rankings aktualisiert\n\n";
-
-// Show sample
+echo "  ✅ {$updated} Rankings aktualisiert\n\n";// Show sample
 $sample = DB::connection('central')->table('comet_rankings')
     ->select('team_fifa_id', 'international_team_name', 'position', 'points')
     ->where('international_team_name', '!=', 'Unknown')
