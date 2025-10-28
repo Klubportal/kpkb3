@@ -1,0 +1,58 @@
+name: Deploy (SSH)
+
+on:
+  push:
+    branches: [ "main" ]
+  workflow_dispatch: {}
+
+jobs:
+  deploy:
+    name: Deploy via SSH
+    runs-on: ubuntu-latest
+    if: ${{ secrets.SSH_HOST != '' && secrets.SSH_USERNAME != '' && secrets.SSH_PRIVATE_KEY != '' && secrets.SSH_TARGET_DIR != '' }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Upload files to server
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: ${{ secrets.SSH_PORT || '22' }}
+          source: |
+            .
+            !.git/**
+            !.github/**
+            !node_modules/**
+            !tests/**
+            !storage/framework/cache/**
+            !storage/framework/sessions/**
+            !storage/framework/testing/**
+            !storage/logs/**
+            !vendor/**
+          target: ${{ secrets.SSH_TARGET_DIR }}
+
+      - name: Run deploy commands on server
+        uses: appleboy/ssh-action@v1.1.0
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: ${{ secrets.SSH_PORT || '22' }}
+          script: |
+            set -e
+            cd ${{ secrets.SSH_TARGET_DIR }}
+            php -v
+            if command -v composer >/dev/null 2>&1; then
+              composer install --no-dev --prefer-dist --no-interaction --optimize-autoloader
+            else
+              echo "Composer not found on server. Please install Composer or deploy vendor directory using SFTP workflow."
+            fi
+            php artisan storage:link || true
+            php artisan migrate --force || true
+            php artisan optimize || true
+            php artisan config:cache || true
+            php artisan route:cache || true
+            php artisan view:cache || true
