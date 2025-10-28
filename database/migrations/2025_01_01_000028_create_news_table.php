@@ -32,13 +32,11 @@ CREATE TABLE `news` (
   `deleted_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `news_slug_unique` (`slug`),
-  KEY `news_author_id_foreign` (`author_id`),
+  KEY `news_author_id_index` (`author_id`),
   KEY `news_status_index` (`status`),
   KEY `news_published_at_index` (`published_at`),
   KEY `news_slug_index` (`slug`),
-  KEY `news_category_id_foreign` (`category_id`),
-  CONSTRAINT `news_author_id_foreign` FOREIGN KEY (`author_id`) REFERENCES `users` (`id`) ON DELETE CASCADE,
-  CONSTRAINT `news_category_id_foreign` FOREIGN KEY (`category_id`) REFERENCES `news_categories` (`id`) ON DELETE SET NULL
+  KEY `news_category_id_index` (`category_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
 SQL
         );

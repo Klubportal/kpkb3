@@ -301,7 +301,11 @@
                                 <td class="py-3 px-2 sm:py-4 sm:px-4 text-center text-xs sm:text-base">{{ $row->wins }}</td>
                                 <td class="py-3 px-2 sm:py-4 sm:px-4 text-center text-xs sm:text-base">{{ $row->draws }}</td>
                                 <td class="py-3 px-2 sm:py-4 sm:px-4 text-center text-xs sm:text-base">{{ $row->losses }}</td>
-                                <td class="py-3 px-2 sm:py-4 sm:px-4 text-center text-xs sm:text-base">{{ $row->goals_for }}:{{ $row->goals_against }}</td>
+                                <td class="py-3 px-2 sm:py-4 sm:px-4 text-center text-xs sm:text-base">{{ $row->goals_for }}</td>
+                                <td class="py-3 px-2 sm:py-4 sm:px-4 text-center text-xs sm:text-base">{{ $row->goals_against }}</td>
+                                <td class="py-3 px-2 sm:py-4 sm:px-4 text-center text-xs sm:text-base {{ ($row->goals_for - $row->goals_against) > 0 ? 'text-green-600' : (($row->goals_for - $row->goals_against) < 0 ? 'text-red-600' : '') }}">
+                                    {{ $row->goals_for - $row->goals_against > 0 ? '+' : '' }}{{ $row->goals_for - $row->goals_against }}
+                                </td>
                                 <td class="py-3 px-2 sm:py-4 sm:px-4 text-center font-bold text-xs sm:text-base">{{ $row->points }}</td>
                             </tr>
                         @endforeach

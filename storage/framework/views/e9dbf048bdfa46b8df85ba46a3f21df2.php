@@ -278,7 +278,9 @@
                             <th class="py-3 px-2 sm:py-4 sm:px-4 text-center text-xs sm:text-sm">S</th>
                             <th class="py-3 px-2 sm:py-4 sm:px-4 text-center text-xs sm:text-sm">U</th>
                             <th class="py-3 px-2 sm:py-4 sm:px-4 text-center text-xs sm:text-sm">N</th>
-                            <th class="py-3 px-2 sm:py-4 sm:px-4 text-center text-xs sm:text-sm">Tore</th>
+                            <th class="py-3 px-2 sm:py-4 sm:px-4 text-center text-xs sm:text-sm">G+</th>
+                            <th class="py-3 px-2 sm:py-4 sm:px-4 text-center text-xs sm:text-sm">G-</th>
+                            <th class="py-3 px-2 sm:py-4 sm:px-4 text-center text-xs sm:text-sm">GD</th>
                             <th class="py-3 px-2 sm:py-4 sm:px-4 text-center text-xs sm:text-sm font-bold">Pkt</th>
                         </tr>
                     </thead>
@@ -299,7 +301,12 @@
                                 <td class="py-3 px-2 sm:py-4 sm:px-4 text-center text-xs sm:text-base"><?php echo e($row->wins); ?></td>
                                 <td class="py-3 px-2 sm:py-4 sm:px-4 text-center text-xs sm:text-base"><?php echo e($row->draws); ?></td>
                                 <td class="py-3 px-2 sm:py-4 sm:px-4 text-center text-xs sm:text-base"><?php echo e($row->losses); ?></td>
-                                <td class="py-3 px-2 sm:py-4 sm:px-4 text-center text-xs sm:text-base"><?php echo e($row->goals_for); ?>:<?php echo e($row->goals_against); ?></td>
+                                <td class="py-3 px-2 sm:py-4 sm:px-4 text-center text-xs sm:text-base"><?php echo e($row->goals_for); ?></td>
+                                <td class="py-3 px-2 sm:py-4 sm:px-4 text-center text-xs sm:text-base"><?php echo e($row->goals_against); ?></td>
+                                <td class="py-3 px-2 sm:py-4 sm:px-4 text-center text-xs sm:text-base <?php echo e(($row->goals_for - $row->goals_against) > 0 ? 'text-green-600' : (($row->goals_for - $row->goals_against) < 0 ? 'text-red-600' : '')); ?>">
+                                    <?php echo e($row->goals_for - $row->goals_against > 0 ? '+' : ''); ?><?php echo e($row->goals_for - $row->goals_against); ?>
+
+                                </td>
                                 <td class="py-3 px-2 sm:py-4 sm:px-4 text-center font-bold text-xs sm:text-base"><?php echo e($row->points); ?></td>
                             </tr>
                         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
