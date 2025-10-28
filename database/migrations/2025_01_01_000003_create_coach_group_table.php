@@ -19,10 +19,8 @@ CREATE TABLE `coach_group` (
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `coach_group_coach_id_group_id_unique` (`coach_id`,`group_id`),
-  KEY `coach_group_group_id_foreign` (`group_id`),
-  KEY `coach_group_coach_id_index` (`coach_id`),
-  CONSTRAINT `coach_group_coach_id_foreign` FOREIGN KEY (`coach_id`) REFERENCES `coaches` (`id`) ON DELETE CASCADE,
-  CONSTRAINT `coach_group_group_id_foreign` FOREIGN KEY (`group_id`) REFERENCES `groups` (`id`) ON DELETE CASCADE
+  KEY `coach_group_group_id_index` (`group_id`),
+  KEY `coach_group_coach_id_index` (`coach_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
 SQL
         );

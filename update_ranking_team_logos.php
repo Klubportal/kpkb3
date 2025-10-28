@@ -7,67 +7,69 @@ $app->make(Illuminate\Contracts\Console\Kernel::class)->bootstrap();
 
 use Illuminate\Support\Facades\DB;
 
-echo "🔄 Aktualisiere Vereinsnamen in comet_rankings...\n\n";
+echo "🔄 Aktualisiere Team-Logos in comet_rankings...\n\n";
 
 // Update Central DB
 echo "Central DB:\n";
 
-// Get all rankings with team IDs
+// Get all unique team IDs from rankings
 $rankings = DB::connection('central')
     ->table('comet_rankings')
-    ->select('id', 'team_fifa_id', 'international_team_name')
+    ->select('id', 'team_fifa_id')
     ->get();
 
 $updated = 0;
 
 foreach ($rankings as $ranking) {
-    // Try to find team name from matches (as home team)
+    // Try to find team logo from matches (as home team first)
     $match = DB::connection('central')
         ->table('comet_matches')
         ->where('team_fifa_id_home', $ranking->team_fifa_id)
-        ->whereNotNull('team_name_home')
+        ->whereNotNull('team_logo_home')
         ->first();
-
-    $teamName = null;
-
-    if ($match && $match->team_name_home) {
-        $teamName = $match->team_name_home;
+    
+    $teamLogo = null;
+    
+    if ($match && $match->team_logo_home) {
+        $teamLogo = $match->team_logo_home;
     } else {
         // Try as away team
         $match = DB::connection('central')
             ->table('comet_matches')
             ->where('team_fifa_id_away', $ranking->team_fifa_id)
-            ->whereNotNull('team_name_away')
+            ->whereNotNull('team_logo_away')
             ->first();
-
-        if ($match && $match->team_name_away) {
-            $teamName = $match->team_name_away;
+        
+        if ($match && $match->team_logo_away) {
+            $teamLogo = $match->team_logo_away;
         }
     }
-
-    if ($teamName && $teamName !== 'Unknown') {
+    
+    if ($teamLogo) {
         DB::connection('central')
             ->table('comet_rankings')
             ->where('id', $ranking->id)
-            ->update(['international_team_name' => $teamName]);
+            ->update(['team_image_logo' => $teamLogo]);
         $updated++;
-
+        
         if ($updated % 10 == 0) {
-            echo "  Progress: {$updated} rankings updated...\n";
+            echo "  Progress: {$updated} logos updated...\n";
         }
     }
 }
 
-echo "  ✅ {$updated} Rankings aktualisiert\n\n";// Show sample
+echo "  ✅ {$updated} Team-Logos aktualisiert\n\n";
+
+// Show sample
 $sample = DB::connection('central')->table('comet_rankings')
-    ->select('team_fifa_id', 'international_team_name', 'position', 'points')
-    ->where('international_team_name', '!=', 'Unknown')
+    ->select('team_fifa_id', 'international_team_name', 'team_image_logo')
+    ->whereNotNull('team_image_logo')
     ->limit(10)
     ->get();
 
 echo "Beispiel:\n";
 foreach ($sample as $row) {
-    echo "  - FIFA ID {$row->team_fifa_id}: {$row->international_team_name} (Platz {$row->position}, {$row->points} Punkte)\n";
+    echo "  - {$row->international_team_name}: {$row->team_image_logo}\n";
 }
 
 echo "\n✅ Fertig!\n";

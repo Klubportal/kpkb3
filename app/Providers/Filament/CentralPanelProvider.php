@@ -59,7 +59,7 @@ class CentralPanelProvider extends PanelProvider
         // Lade Settings ohne Redis-Abhängigkeit (vermeidet "Class Redis not found" in Dev)
         // Hinweis: Wir verzichten hier bewusst auf cache()->remember(), da die Umgebung ggf. Redis erwartet.
         // Für Prod kann wieder gezielt gecached werden (z.B. cache()->store('array')->remember(...)).
-        
+
         // Guard: Only load settings if the settings table exists (prevents migration errors)
         $favicon = asset('images/logo.svg');
         try {
