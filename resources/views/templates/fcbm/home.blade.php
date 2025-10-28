@@ -154,7 +154,7 @@
                                 <span class="text-primary font-bold text-3xl">{{ strtoupper(substr($nextMatch->team_name_home, 0, 2)) }}</span>
                             </div>
                         @endif
-                        <h3 class="text-2xl font-bold">{{ $nextMatch->team_name_home }}</h3>
+                        <h3 class="text-2xl font-bold text-gray-900">{{ $nextMatch->team_name_home }}</h3>
                     </div>
 
                     <!-- Match Info -->
@@ -177,10 +177,10 @@
                             <img src="{{ asset('storage/' . $settings->logo) }}" alt="{{ $settings->website_name }}" class="h-24 w-24 mx-auto mb-4 object-contain">
                         @else
                             <div class="h-24 w-24 mx-auto mb-4 bg-white bg-opacity-20 rounded-full flex items-center justify-center">
-                                <span class="text-white font-bold text-3xl">{{ strtoupper(substr($nextMatch->team_name_away, 0, 2)) }}</span>
+                                <span class="text-gray-900 font-bold text-3xl">{{ strtoupper(substr($nextMatch->team_name_away, 0, 2)) }}</span>
                             </div>
                         @endif
-                        <h3 class="text-2xl font-bold">{{ $nextMatch->team_name_away }}</h3>
+                        <h3 class="text-2xl font-bold text-gray-900">{{ $nextMatch->team_name_away }}</h3>
                     </div>
                 </div>
             </div>
@@ -192,14 +192,14 @@
             <div class="max-w-4xl mx-auto bg-white bg-opacity-10 backdrop-blur-lg rounded-2xl p-8">
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-8 items-center">
                     <div class="text-center">
-                        <h3 class="text-2xl font-bold">{{ $lastMatch->team_name_home }}</h3>
+                        <h3 class="text-2xl font-bold text-gray-900">{{ $lastMatch->team_name_home }}</h3>
                     </div>
                     <div class="text-center">
                         <div class="text-6xl font-bold mb-4">{{ $lastMatch->team_score_home }} : {{ $lastMatch->team_score_away }}</div>
                         <div class="text-xl">{{ \Illuminate\Support\Carbon::parse($lastMatch->date_time_local)->translatedFormat('l, d.m.Y') }}</div>
                     </div>
                     <div class="text-center">
-                        <h3 class="text-2xl font-bold">{{ $lastMatch->team_name_away }}</h3>
+                        <h3 class="text-2xl font-bold text-gray-900">{{ $lastMatch->team_name_away }}</h3>
                     </div>
                 </div>
             </div>

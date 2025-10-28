@@ -23,9 +23,8 @@ CREATE TABLE `sync_errors` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `sync_errors_sync_log_id_foreign` (`sync_log_id`),
-  KEY `sync_errors_error_type_index` (`error_type`),
-  CONSTRAINT `sync_errors_sync_log_id_foreign` FOREIGN KEY (`sync_log_id`) REFERENCES `sync_logs` (`id`) ON DELETE CASCADE
+  KEY `sync_errors_sync_log_id_index` (`sync_log_id`),
+  KEY `sync_errors_error_type_index` (`error_type`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
 SQL
         );
