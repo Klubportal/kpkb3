@@ -7,7 +7,7 @@ return [
          * Whether routing should be automatically handled.
          * Disable if you want finer and manual control over how the routing to your pages is done.
          */
-        'enabled' => true,
+        'enabled' => env('FABRICATOR_ROUTING_ENABLED', true),
 
         /**
          * The prefix to use for all pages' routes.
