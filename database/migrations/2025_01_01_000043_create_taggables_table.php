@@ -17,7 +17,7 @@ CREATE TABLE `taggables` (
   `taggable_id` bigint(20) unsigned NOT NULL,
   UNIQUE KEY `taggables_tag_id_taggable_id_taggable_type_unique` (`tag_id`,`taggable_id`,`taggable_type`),
   KEY `taggables_taggable_type_taggable_id_index` (`taggable_type`,`taggable_id`),
-  CONSTRAINT `taggables_tag_id_foreign` FOREIGN KEY (`tag_id`) REFERENCES `tags` (`id`) ON DELETE CASCADE
+  KEY `taggables_tag_id_index` (`tag_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
 SQL
         );
