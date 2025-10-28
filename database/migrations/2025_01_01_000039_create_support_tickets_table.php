@@ -25,12 +25,9 @@ CREATE TABLE `support_tickets` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `support_tickets_tenant_id_foreign` (`tenant_id`),
-  KEY `support_tickets_created_by_foreign` (`created_by`),
-  KEY `support_tickets_assigned_to_foreign` (`assigned_to`),
-  CONSTRAINT `support_tickets_assigned_to_foreign` FOREIGN KEY (`assigned_to`) REFERENCES `users` (`id`) ON DELETE SET NULL,
-  CONSTRAINT `support_tickets_created_by_foreign` FOREIGN KEY (`created_by`) REFERENCES `users` (`id`) ON DELETE CASCADE,
-  CONSTRAINT `support_tickets_tenant_id_foreign` FOREIGN KEY (`tenant_id`) REFERENCES `tenants` (`id`) ON DELETE CASCADE
+  KEY `support_tickets_tenant_id_index` (`tenant_id`),
+  KEY `support_tickets_created_by_index` (`created_by`),
+  KEY `support_tickets_assigned_to_index` (`assigned_to`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
 SQL
         );
