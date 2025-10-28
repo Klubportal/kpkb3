@@ -27,9 +27,9 @@ foreach ($rankings as $ranking) {
         ->where('team_fifa_id_home', $ranking->team_fifa_id)
         ->whereNotNull('team_logo_home')
         ->first();
-    
+
     $teamLogo = null;
-    
+
     if ($match && $match->team_logo_home) {
         $teamLogo = $match->team_logo_home;
     } else {
@@ -39,19 +39,19 @@ foreach ($rankings as $ranking) {
             ->where('team_fifa_id_away', $ranking->team_fifa_id)
             ->whereNotNull('team_logo_away')
             ->first();
-        
+
         if ($match && $match->team_logo_away) {
             $teamLogo = $match->team_logo_away;
         }
     }
-    
+
     if ($teamLogo) {
         DB::connection('central')
             ->table('comet_rankings')
             ->where('id', $ranking->id)
             ->update(['team_image_logo' => $teamLogo]);
         $updated++;
-        
+
         if ($updated % 10 == 0) {
             echo "  Progress: {$updated} logos updated...\n";
         }

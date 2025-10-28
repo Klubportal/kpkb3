@@ -227,11 +227,16 @@
                 <tbody>
                     <?php $__currentLoopData = $matchdayMatches; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $m): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                         <tr class="border-b hover:bg-gray-50">
-                            <td class="py-3 px-4 w-28 text-sm text-gray-500 whitespace-nowrap"><?php echo e(\Illuminate\Support\Carbon::parse($m->date_time_local)->format('d.m. H:i')); ?></td>
+                            <td class="py-3 px-4 w-20 sm:w-28 text-xs sm:text-sm text-gray-500 whitespace-nowrap"><?php echo e(\Illuminate\Support\Carbon::parse($m->date_time_local)->format('d.m. H:i')); ?></td>
                             <td class="py-3 px-4">
-                                <div class="flex items-center justify-between gap-3">
-                                    <div class="flex-1 text-right font-medium"><?php echo e($m->team_name_home); ?></div>
-                                    <div class="w-20 text-center font-bold">
+                                <div class="flex items-center justify-between gap-2 sm:gap-3">
+                                    <div class="flex-1 flex items-center justify-end gap-2">
+                                        <span class="font-medium text-sm sm:text-base"><?php echo e($m->team_name_home); ?></span>
+                                        <?php if($m->team_logo_home): ?>
+                                            <img src="<?php echo e($m->team_logo_home); ?>" alt="<?php echo e($m->team_name_home); ?>" class="w-6 h-6 sm:w-8 sm:h-8 object-contain">
+                                        <?php endif; ?>
+                                    </div>
+                                    <div class="w-16 sm:w-20 text-center font-bold text-sm sm:text-base">
                                         <?php if(!is_null($m->team_score_home) && !is_null($m->team_score_away)): ?>
                                             <?php echo e($m->team_score_home); ?> : <?php echo e($m->team_score_away); ?>
 
@@ -239,7 +244,12 @@
                                             - : -
                                         <?php endif; ?>
                                     </div>
-                                    <div class="flex-1 text-left font-medium"><?php echo e($m->team_name_away); ?></div>
+                                    <div class="flex-1 flex items-center justify-start gap-2">
+                                        <?php if($m->team_logo_away): ?>
+                                            <img src="<?php echo e($m->team_logo_away); ?>" alt="<?php echo e($m->team_name_away); ?>" class="w-6 h-6 sm:w-8 sm:h-8 object-contain">
+                                        <?php endif; ?>
+                                        <span class="font-medium text-sm sm:text-base"><?php echo e($m->team_name_away); ?></span>
+                                    </div>
                                 </div>
                             </td>
                         </tr>
@@ -258,39 +268,39 @@
 
         <?php if(isset($standings) && $standings->count()): ?>
             <?php ($clubId = $settings->club_fifa_id ?? null); ?>
-            <div class="max-w-4xl mx-auto bg-white rounded-lg shadow-lg overflow-hidden">
-                <table class="w-full">
+            <div class="max-w-6xl mx-auto bg-white rounded-lg shadow-lg overflow-x-auto">
+                <table class="w-full min-w-[640px]">
                     <thead class="bg-gray-900 text-white">
                         <tr>
-                            <th class="py-4 px-6 text-left">#</th>
-                            <th class="py-4 px-6 text-left">Verein</th>
-                            <th class="py-4 px-6 text-center hidden md:table-cell">Sp</th>
-                            <th class="py-4 px-6 text-center hidden md:table-cell">S</th>
-                            <th class="py-4 px-6 text-center hidden md:table-cell">U</th>
-                            <th class="py-4 px-6 text-center hidden md:table-cell">N</th>
-                            <th class="py-4 px-6 text-center">Tore</th>
-                            <th class="py-4 px-6 text-center font-bold">Pkt</th>
+                            <th class="py-3 px-2 sm:py-4 sm:px-4 text-left text-xs sm:text-sm">#</th>
+                            <th class="py-3 px-2 sm:py-4 sm:px-6 text-left text-xs sm:text-sm">Verein</th>
+                            <th class="py-3 px-2 sm:py-4 sm:px-4 text-center text-xs sm:text-sm">Sp</th>
+                            <th class="py-3 px-2 sm:py-4 sm:px-4 text-center text-xs sm:text-sm">S</th>
+                            <th class="py-3 px-2 sm:py-4 sm:px-4 text-center text-xs sm:text-sm">U</th>
+                            <th class="py-3 px-2 sm:py-4 sm:px-4 text-center text-xs sm:text-sm">N</th>
+                            <th class="py-3 px-2 sm:py-4 sm:px-4 text-center text-xs sm:text-sm">Tore</th>
+                            <th class="py-3 px-2 sm:py-4 sm:px-4 text-center text-xs sm:text-sm font-bold">Pkt</th>
                         </tr>
                     </thead>
                     <tbody>
                         <?php $__currentLoopData = $standings; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $row): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                             <?php ($isClub = $clubId && (int)$row->team_fifa_id === (int)$clubId); ?>
                             <tr class="border-b hover:bg-gray-50 <?php echo e($isClub ? 'bg-primary/5' : ''); ?>">
-                                <td class="py-4 px-6 font-bold <?php echo e($isClub ? 'text-primary' : ''); ?>"><?php echo e($row->position); ?></td>
-                                <td class="py-4 px-6 <?php echo e($isClub ? 'font-bold text-primary' : ''); ?>">
-                                    <div class="flex items-center gap-3">
+                                <td class="py-3 px-2 sm:py-4 sm:px-4 font-bold <?php echo e($isClub ? 'text-primary' : ''); ?> text-xs sm:text-base"><?php echo e($row->position); ?></td>
+                                <td class="py-3 px-2 sm:py-4 sm:px-6 <?php echo e($isClub ? 'font-bold text-primary' : ''); ?>">
+                                    <div class="flex items-center gap-2">
                                         <?php if($row->team_image_logo): ?>
-                                            <img src="<?php echo e($row->team_image_logo); ?>" alt="<?php echo e($row->international_team_name); ?>" class="w-8 h-8 object-contain">
+                                            <img src="<?php echo e($row->team_image_logo); ?>" alt="<?php echo e($row->international_team_name); ?>" class="w-6 h-6 sm:w-8 sm:h-8 object-contain flex-shrink-0">
                                         <?php endif; ?>
-                                        <span><?php echo e($row->international_team_name); ?></span>
+                                        <span class="text-xs sm:text-base"><?php echo e($row->international_team_name); ?></span>
                                     </div>
                                 </td>
-                                <td class="py-4 px-6 text-center hidden md:table-cell"><?php echo e($row->matches_played); ?></td>
-                                <td class="py-4 px-6 text-center hidden md:table-cell"><?php echo e($row->wins); ?></td>
-                                <td class="py-4 px-6 text-center hidden md:table-cell"><?php echo e($row->draws); ?></td>
-                                <td class="py-4 px-6 text-center hidden md:table-cell"><?php echo e($row->losses); ?></td>
-                                <td class="py-4 px-6 text-center"><?php echo e($row->goals_for); ?>:<?php echo e($row->goals_against); ?></td>
-                                <td class="py-4 px-6 text-center font-bold"><?php echo e($row->points); ?></td>
+                                <td class="py-3 px-2 sm:py-4 sm:px-4 text-center text-xs sm:text-base"><?php echo e($row->matches_played); ?></td>
+                                <td class="py-3 px-2 sm:py-4 sm:px-4 text-center text-xs sm:text-base"><?php echo e($row->wins); ?></td>
+                                <td class="py-3 px-2 sm:py-4 sm:px-4 text-center text-xs sm:text-base"><?php echo e($row->draws); ?></td>
+                                <td class="py-3 px-2 sm:py-4 sm:px-4 text-center text-xs sm:text-base"><?php echo e($row->losses); ?></td>
+                                <td class="py-3 px-2 sm:py-4 sm:px-4 text-center text-xs sm:text-base"><?php echo e($row->goals_for); ?>:<?php echo e($row->goals_against); ?></td>
+                                <td class="py-3 px-2 sm:py-4 sm:px-4 text-center font-bold text-xs sm:text-base"><?php echo e($row->points); ?></td>
                             </tr>
                         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                     </tbody>

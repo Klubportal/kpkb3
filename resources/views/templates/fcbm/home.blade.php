@@ -228,18 +228,28 @@
                 <tbody>
                     @foreach($matchdayMatches as $m)
                         <tr class="border-b hover:bg-gray-50">
-                            <td class="py-3 px-4 w-28 text-sm text-gray-500 whitespace-nowrap">{{ \Illuminate\Support\Carbon::parse($m->date_time_local)->format('d.m. H:i') }}</td>
+                            <td class="py-3 px-4 w-20 sm:w-28 text-xs sm:text-sm text-gray-500 whitespace-nowrap">{{ \Illuminate\Support\Carbon::parse($m->date_time_local)->format('d.m. H:i') }}</td>
                             <td class="py-3 px-4">
-                                <div class="flex items-center justify-between gap-3">
-                                    <div class="flex-1 text-right font-medium">{{ $m->team_name_home }}</div>
-                                    <div class="w-20 text-center font-bold">
+                                <div class="flex items-center justify-between gap-2 sm:gap-3">
+                                    <div class="flex-1 flex items-center justify-end gap-2">
+                                        <span class="font-medium text-sm sm:text-base">{{ $m->team_name_home }}</span>
+                                        @if($m->team_logo_home)
+                                            <img src="{{ $m->team_logo_home }}" alt="{{ $m->team_name_home }}" class="w-6 h-6 sm:w-8 sm:h-8 object-contain">
+                                        @endif
+                                    </div>
+                                    <div class="w-16 sm:w-20 text-center font-bold text-sm sm:text-base">
                                         @if(!is_null($m->team_score_home) && !is_null($m->team_score_away))
                                             {{ $m->team_score_home }} : {{ $m->team_score_away }}
                                         @else
                                             - : -
                                         @endif
                                     </div>
-                                    <div class="flex-1 text-left font-medium">{{ $m->team_name_away }}</div>
+                                    <div class="flex-1 flex items-center justify-start gap-2">
+                                        @if($m->team_logo_away)
+                                            <img src="{{ $m->team_logo_away }}" alt="{{ $m->team_name_away }}" class="w-6 h-6 sm:w-8 sm:h-8 object-contain">
+                                        @endif
+                                        <span class="font-medium text-sm sm:text-base">{{ $m->team_name_away }}</span>
+                                    </div>
                                 </div>
                             </td>
                         </tr>
@@ -258,39 +268,41 @@
 
         @if(isset($standings) && $standings->count())
             @php($clubId = $settings->club_fifa_id ?? null)
-            <div class="max-w-4xl mx-auto bg-white rounded-lg shadow-lg overflow-hidden">
-                <table class="w-full">
+            <div class="max-w-6xl mx-auto bg-white rounded-lg shadow-lg overflow-x-auto">
+                <table class="w-full min-w-[640px]">
                     <thead class="bg-gray-900 text-white">
                         <tr>
-                            <th class="py-4 px-6 text-left">#</th>
-                            <th class="py-4 px-6 text-left">Verein</th>
-                            <th class="py-4 px-6 text-center hidden md:table-cell">Sp</th>
-                            <th class="py-4 px-6 text-center hidden md:table-cell">S</th>
-                            <th class="py-4 px-6 text-center hidden md:table-cell">U</th>
-                            <th class="py-4 px-6 text-center hidden md:table-cell">N</th>
-                            <th class="py-4 px-6 text-center">Tore</th>
-                            <th class="py-4 px-6 text-center font-bold">Pkt</th>
+                            <th class="py-3 px-2 sm:py-4 sm:px-4 text-left text-xs sm:text-sm">#</th>
+                            <th class="py-3 px-2 sm:py-4 sm:px-6 text-left text-xs sm:text-sm">Verein</th>
+                            <th class="py-3 px-2 sm:py-4 sm:px-4 text-center text-xs sm:text-sm">Sp</th>
+                            <th class="py-3 px-2 sm:py-4 sm:px-4 text-center text-xs sm:text-sm">S</th>
+                            <th class="py-3 px-2 sm:py-4 sm:px-4 text-center text-xs sm:text-sm">U</th>
+                            <th class="py-3 px-2 sm:py-4 sm:px-4 text-center text-xs sm:text-sm">N</th>
+                            <th class="py-3 px-2 sm:py-4 sm:px-4 text-center text-xs sm:text-sm">G+</th>
+                            <th class="py-3 px-2 sm:py-4 sm:px-4 text-center text-xs sm:text-sm">G-</th>
+                            <th class="py-3 px-2 sm:py-4 sm:px-4 text-center text-xs sm:text-sm">GD</th>
+                            <th class="py-3 px-2 sm:py-4 sm:px-4 text-center text-xs sm:text-sm font-bold">Pkt</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach($standings as $row)
                             @php($isClub = $clubId && (int)$row->team_fifa_id === (int)$clubId)
                             <tr class="border-b hover:bg-gray-50 {{ $isClub ? 'bg-primary/5' : '' }}">
-                                <td class="py-4 px-6 font-bold {{ $isClub ? 'text-primary' : '' }}">{{ $row->position }}</td>
-                                <td class="py-4 px-6 {{ $isClub ? 'font-bold text-primary' : '' }}">
-                                    <div class="flex items-center gap-3">
+                                <td class="py-3 px-2 sm:py-4 sm:px-4 font-bold {{ $isClub ? 'text-primary' : '' }} text-xs sm:text-base">{{ $row->position }}</td>
+                                <td class="py-3 px-2 sm:py-4 sm:px-6 {{ $isClub ? 'font-bold text-primary' : '' }}">
+                                    <div class="flex items-center gap-2">
                                         @if($row->team_image_logo)
-                                            <img src="{{ $row->team_image_logo }}" alt="{{ $row->international_team_name }}" class="w-8 h-8 object-contain">
+                                            <img src="{{ $row->team_image_logo }}" alt="{{ $row->international_team_name }}" class="w-6 h-6 sm:w-8 sm:h-8 object-contain flex-shrink-0">
                                         @endif
-                                        <span>{{ $row->international_team_name }}</span>
+                                        <span class="text-xs sm:text-base">{{ $row->international_team_name }}</span>
                                     </div>
                                 </td>
-                                <td class="py-4 px-6 text-center hidden md:table-cell">{{ $row->matches_played }}</td>
-                                <td class="py-4 px-6 text-center hidden md:table-cell">{{ $row->wins }}</td>
-                                <td class="py-4 px-6 text-center hidden md:table-cell">{{ $row->draws }}</td>
-                                <td class="py-4 px-6 text-center hidden md:table-cell">{{ $row->losses }}</td>
-                                <td class="py-4 px-6 text-center">{{ $row->goals_for }}:{{ $row->goals_against }}</td>
-                                <td class="py-4 px-6 text-center font-bold">{{ $row->points }}</td>
+                                <td class="py-3 px-2 sm:py-4 sm:px-4 text-center text-xs sm:text-base">{{ $row->matches_played }}</td>
+                                <td class="py-3 px-2 sm:py-4 sm:px-4 text-center text-xs sm:text-base">{{ $row->wins }}</td>
+                                <td class="py-3 px-2 sm:py-4 sm:px-4 text-center text-xs sm:text-base">{{ $row->draws }}</td>
+                                <td class="py-3 px-2 sm:py-4 sm:px-4 text-center text-xs sm:text-base">{{ $row->losses }}</td>
+                                <td class="py-3 px-2 sm:py-4 sm:px-4 text-center text-xs sm:text-base">{{ $row->goals_for }}:{{ $row->goals_against }}</td>
+                                <td class="py-3 px-2 sm:py-4 sm:px-4 text-center font-bold text-xs sm:text-base">{{ $row->points }}</td>
                             </tr>
                         @endforeach
                     </tbody>
