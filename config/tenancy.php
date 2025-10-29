@@ -19,6 +19,9 @@ return [
         'localhost',  // ← WIEDER HINZUGEFÜGT! localhost:8000 ist CENTRAL!
         '127.0.0.1',
         'admin.klubportal.com',  // Zentrale Domain für Produktion
+        '46.224.7.207',  // Production Server IP
+        'klubbase.com',  // Production Domain
+        'admin.klubbase.com',  // Production Admin Subdomain
     ],
 
     /**
