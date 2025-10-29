@@ -48,8 +48,9 @@ CREATE TABLE `club_players` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `comet_player_id` (`comet_player_id`),
-  CONSTRAINT `club_players_ibfk_1` FOREIGN KEY (`comet_player_id`) REFERENCES `comet_players` (`id`) ON DELETE SET NULL
+  KEY `comet_player_id` (`comet_player_id`)
+  -- CONSTRAINT removed: comet_players table created later in migration order
+  -- CONSTRAINT `club_players_ibfk_1` FOREIGN KEY (`comet_player_id`) REFERENCES `comet_players` (`id`) ON DELETE SET NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
 SQL
         );
