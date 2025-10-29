@@ -48,7 +48,7 @@ class HomeController extends Controller
                 ->get();
         }
 
-        // Get last 6 completed SENIORS matches
+        // Get recent match results (last 5 completed matches)
         $recentResults = DB::table('comet_matches')
             ->where(function ($query) use ($clubFifaId) {
                 $query->where('team_fifa_id_home', $clubFifaId)
@@ -59,7 +59,7 @@ class HomeController extends Controller
             ->whereNotNull('team_score_home')
             ->whereNotNull('team_score_away')
             ->orderBy('date_time_local', 'desc')
-            ->limit(6)
+            ->limit(5)
             ->get();
 
         // Determine seniors league competition for our club

@@ -20,6 +20,14 @@ class EditCometPlayer extends EditRecord
         ];
     }
 
+    protected function getFormActions(): array
+    {
+        return [
+            $this->getSaveFormAction(),
+            $this->getCancelFormAction(),
+        ];
+    }
+
     protected function mutateFormDataBeforeFill(array $data): array
     {
         // Load club-specific data if it exists

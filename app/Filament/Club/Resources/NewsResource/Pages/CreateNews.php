@@ -12,7 +12,15 @@ class CreateNews extends CreateRecord
 
     protected function mutateFormDataBeforeCreate(array $data): array
     {
-    $data['author_user_id'] = Auth::id();
+        $data['author_user_id'] = Auth::id();
         return $data;
+    }
+
+    protected function getFormActions(): array
+    {
+        return [
+            $this->getCreateFormAction(),
+            $this->getCancelFormAction(),
+        ];
     }
 }

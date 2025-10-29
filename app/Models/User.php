@@ -9,12 +9,12 @@ use Illuminate\Notifications\Notifiable;
 use Spatie\Permission\Traits\HasRoles;
 use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\Activitylog\LogOptions;
-use Jeffgreco13\FilamentBreezy\Traits\TwoFactorAuthenticatable;
+// use Jeffgreco13\FilamentBreezy\Traits\TwoFactorAuthenticatable;
 
 class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable, HasRoles, LogsActivity, TwoFactorAuthenticatable;
+    use HasFactory, Notifiable, HasRoles, LogsActivity; // , TwoFactorAuthenticatable
 
     /**
      * The database connection for the model.

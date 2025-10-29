@@ -148,7 +148,7 @@
                         @if($homeLogo)
                             <img src="{{ $homeLogo }}" alt="{{ $nextMatch->team_name_home }}" class="h-24 w-24 mx-auto mb-4 object-contain">
                         @elseif($settings->logo && $nextMatch->team_name_home === ($settings->website_name ?? ''))
-                            <img src="{{ asset('storage/' . $settings->logo) }}" alt="{{ $settings->website_name }}" class="h-24 w-24 mx-auto mb-4 object-contain">
+                            <img src="{{ url('/storage/' . $settings->logo) }}" alt="{{ $settings->website_name }}" class="h-24 w-24 mx-auto mb-4 object-contain">
                         @else
                             <div class="h-24 w-24 mx-auto mb-4 bg-white rounded-full flex items-center justify-center">
                                 <span class="text-primary font-bold text-3xl">{{ strtoupper(substr($nextMatch->team_name_home, 0, 2)) }}</span>
@@ -160,12 +160,12 @@
                     <!-- Match Info -->
                     <div class="text-center">
                         @if(!is_null($nextMatch->team_score_home) && !is_null($nextMatch->team_score_away))
-                            <div class="text-6xl font-bold mb-4">{{ $nextMatch->team_score_home }} : {{ $nextMatch->team_score_away }}</div>
+                            <div class="text-6xl font-bold mb-4 text-gray-900">{{ $nextMatch->team_score_home }} : {{ $nextMatch->team_score_away }}</div>
                         @else
-                            <div class="text-6xl font-bold mb-4">VS</div>
+                            <div class="text-6xl font-bold mb-4 text-gray-900">VS</div>
                         @endif
-                        <div class="text-xl mb-2">{{ \Illuminate\Support\Carbon::parse($nextMatch->date_time_local)->translatedFormat('l, d.m.Y') }}</div>
-                        <div class="text-2xl font-bold">{{ \Illuminate\Support\Carbon::parse($nextMatch->date_time_local)->format('H:i') }} Uhr</div>
+                        <div class="text-xl mb-2 text-gray-900">{{ \Illuminate\Support\Carbon::parse($nextMatch->date_time_local)->translatedFormat('l, d.m.Y') }}</div>
+                        <div class="text-2xl font-bold text-gray-900">{{ \Illuminate\Support\Carbon::parse($nextMatch->date_time_local)->format('H:i') }} Uhr</div>
                     </div>
 
                     <!-- Away Team -->
@@ -174,7 +174,7 @@
                         @if($awayLogo)
                             <img src="{{ $awayLogo }}" alt="{{ $nextMatch->team_name_away }}" class="h-24 w-24 mx-auto mb-4 object-contain">
                         @elseif($settings->logo && $nextMatch->team_name_away === ($settings->website_name ?? ''))
-                            <img src="{{ asset('storage/' . $settings->logo) }}" alt="{{ $settings->website_name }}" class="h-24 w-24 mx-auto mb-4 object-contain">
+                            <img src="{{ url('/storage/' . $settings->logo) }}" alt="{{ $settings->website_name }}" class="h-24 w-24 mx-auto mb-4 object-contain">
                         @else
                             <div class="h-24 w-24 mx-auto mb-4 bg-white bg-opacity-20 rounded-full flex items-center justify-center">
                                 <span class="text-gray-900 font-bold text-3xl">{{ strtoupper(substr($nextMatch->team_name_away, 0, 2)) }}</span>
@@ -195,8 +195,8 @@
                         <h3 class="text-2xl font-bold text-gray-900">{{ $lastMatch->team_name_home }}</h3>
                     </div>
                     <div class="text-center">
-                        <div class="text-6xl font-bold mb-4">{{ $lastMatch->team_score_home }} : {{ $lastMatch->team_score_away }}</div>
-                        <div class="text-xl">{{ \Illuminate\Support\Carbon::parse($lastMatch->date_time_local)->translatedFormat('l, d.m.Y') }}</div>
+                        <div class="text-6xl font-bold mb-4 text-gray-900">{{ $lastMatch->team_score_home }} : {{ $lastMatch->team_score_away }}</div>
+                        <div class="text-xl text-gray-900">{{ \Illuminate\Support\Carbon::parse($lastMatch->date_time_local)->translatedFormat('l, d.m.Y') }}</div>
                     </div>
                     <div class="text-center">
                         <h3 class="text-2xl font-bold text-gray-900">{{ $lastMatch->team_name_away }}</h3>
@@ -211,6 +211,76 @@
         @endif
     </div>
 </section>
+
+<!-- Recent Results Section -->
+@if(isset($recentResults))
+<section class="py-16 bg-white border-t border-gray-200">
+    <div class="container mx-auto px-4">
+        <div class="flex justify-between items-center mb-8">
+            <h2 class="text-4xl font-bold text-gray-900">Letzte Ergebnisse</h2>
+        </div>
+
+        <div class="max-w-4xl mx-auto space-y-4">
+            @if($recentResults && count($recentResults) > 0)
+                @foreach($recentResults as $match)
+                    <?php
+                        $isHome = ($match->team_fifa_id_home == ($settings->club_fifa_id ?? null));
+                        $ourScore = $isHome ? $match->team_score_home : $match->team_score_away;
+                        $theirScore = $isHome ? $match->team_score_away : $match->team_score_home;
+
+                        $isWin = ($ourScore > $theirScore);
+                        $isDraw = ($ourScore == $theirScore);
+
+                        $resultClass = $isWin ? 'border-l-green-500 bg-green-50' : ($isDraw ? 'border-l-yellow-500 bg-yellow-50' : 'border-l-red-500 bg-red-50');
+                        $resultBadge = $isWin ? 'bg-green-500 text-white' : ($isDraw ? 'bg-yellow-500 text-white' : 'bg-red-500 text-white');
+                        $resultText = $isWin ? 'S' : ($isDraw ? 'U' : 'N');
+                    ?>
+
+                    <div class="bg-white rounded-lg shadow hover:shadow-lg transition border-l-4 {{ $resultClass }}">
+                        <div class="p-4 sm:p-6">
+                            <div class="flex flex-col sm:flex-row items-start sm:items-center gap-4">
+                                <!-- Date & Competition -->
+                                <div class="flex-shrink-0">
+                                    <div class="text-sm text-gray-500 font-medium">{{ \Illuminate\Support\Carbon::parse($match->date_time_local)->format('d.m.Y') }}</div>
+                                    <div class="text-xs text-gray-400">{{ $match->competition_name ?? 'Liga' }}</div>
+                                </div>
+
+                                <!-- Match Details -->
+                                <div class="flex-1 flex items-center justify-between gap-3">
+                                    <div class="flex items-center gap-2 flex-1 justify-end">
+                                        <span class="font-semibold text-gray-900 text-sm sm:text-base text-right">{{ $match->team_name_home }}</span>
+                                        <img src="{{ $match->team_logo_home }}" alt="{{ $match->team_name_home }}" class="w-6 h-6 sm:w-8 sm:h-8 object-contain flex-shrink-0" onerror="this.style.display='none'">
+                                    </div>
+
+                                    <div class="flex items-center gap-2 px-3 py-1 bg-gray-100 rounded-lg">
+                                        <span class="font-bold text-lg sm:text-xl">{{ $match->team_score_home }}</span>
+                                        <span class="text-gray-400">:</span>
+                                        <span class="font-bold text-lg sm:text-xl">{{ $match->team_score_away }}</span>
+                                    </div>
+
+                                    <div class="flex items-center gap-2 flex-1">
+                                        <img src="{{ $match->team_logo_away }}" alt="{{ $match->team_name_away }}" class="w-6 h-6 sm:w-8 sm:h-8 object-contain flex-shrink-0" onerror="this.style.display='none'">
+                                        <span class="font-semibold text-gray-900 text-sm sm:text-base">{{ $match->team_name_away }}</span>
+                                    </div>
+                                </div>
+
+                                <!-- Result Badge -->
+                                <div class="flex-shrink-0">
+                                    <span class="inline-flex items-center justify-center w-8 h-8 rounded-full {{ $resultBadge }} font-bold text-sm">
+                                        {{ $resultText }}
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                @endforeach
+            @else
+                <div class="text-gray-600">Keine Ergebnisse verfügbar.</div>
+            @endif
+        </div>
+    </div>
+</section>
+@endif
 
 @if(isset($matchdayMatches) && $matchdayMatches->count())
 <!-- Matchday Schedule (Seniors) -->
@@ -233,9 +303,7 @@
                                 <div class="flex items-center justify-between gap-2 sm:gap-3">
                                     <div class="flex-1 flex items-center justify-end gap-2">
                                         <span class="font-medium text-sm sm:text-base">{{ $m->team_name_home }}</span>
-                                        @if($m->team_logo_home)
-                                            <img src="{{ $m->team_logo_home }}" alt="{{ $m->team_name_home }}" class="w-6 h-6 sm:w-8 sm:h-8 object-contain">
-                                        @endif
+                                        <img src="{{ $m->team_logo_home }}" alt="{{ $m->team_name_home }}" class="w-6 h-6 sm:w-8 sm:h-8 object-contain" onerror="this.style.display='none'">
                                     </div>
                                     <div class="w-16 sm:w-20 text-center font-bold text-sm sm:text-base">
                                         @if(!is_null($m->team_score_home) && !is_null($m->team_score_away))
@@ -245,9 +313,7 @@
                                         @endif
                                     </div>
                                     <div class="flex-1 flex items-center justify-start gap-2">
-                                        @if($m->team_logo_away)
-                                            <img src="{{ $m->team_logo_away }}" alt="{{ $m->team_name_away }}" class="w-6 h-6 sm:w-8 sm:h-8 object-contain">
-                                        @endif
+                                        <img src="{{ $m->team_logo_away }}" alt="{{ $m->team_name_away }}" class="w-6 h-6 sm:w-8 sm:h-8 object-contain" onerror="this.style.display='none'">
                                         <span class="font-medium text-sm sm:text-base">{{ $m->team_name_away }}</span>
                                     </div>
                                 </div>
@@ -291,9 +357,7 @@
                                 <td class="py-3 px-2 sm:py-4 sm:px-4 font-bold {{ $isClub ? 'text-primary' : '' }} text-xs sm:text-base">{{ $row->position }}</td>
                                 <td class="py-3 px-2 sm:py-4 sm:px-6 {{ $isClub ? 'font-bold text-primary' : '' }}">
                                     <div class="flex items-center gap-2">
-                                        @if($row->team_image_logo)
-                                            <img src="{{ $row->team_image_logo }}" alt="{{ $row->international_team_name }}" class="w-6 h-6 sm:w-8 sm:h-8 object-contain flex-shrink-0">
-                                        @endif
+                                        <img src="{{ $row->team_image_logo }}" alt="{{ $row->international_team_name }}" class="w-6 h-6 sm:w-8 sm:h-8 object-contain flex-shrink-0" onerror="this.style.display='none'">
                                         <span class="text-xs sm:text-base">{{ $row->international_team_name }}</span>
                                     </div>
                                 </td>

@@ -11,6 +11,14 @@ class EditTemplateSetting extends EditRecord
 {
     protected static string $resource = TemplateSettingResource::class;
 
+    public function mount(int | string $record): void
+    {
+        parent::mount($record);
+
+        // Explizit die Form füllen (wichtig für Livewire-Components)
+        $this->form->fill();
+    }
+
     protected function getHeaderActions(): array
     {
         return [
@@ -19,6 +27,14 @@ class EditTemplateSetting extends EditRecord
                 ->icon('heroicon-o-eye')
                 ->url(fn () => url('/'), shouldOpenInNewTab: true)
                 ->color('info'),
+        ];
+    }
+
+    protected function getFormActions(): array
+    {
+        return [
+            $this->getSaveFormAction(),
+            $this->getCancelFormAction(),
         ];
     }
 

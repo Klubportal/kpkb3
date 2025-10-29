@@ -15,4 +15,12 @@ class EditPlan extends EditRecord
             \Filament\Actions\DeleteAction::make(),
         ];
     }
+
+    protected function getFormActions(): array
+    {
+        return [
+            $this->getSaveFormAction(),
+            $this->getCancelFormAction(),
+        ];
+    }
 }

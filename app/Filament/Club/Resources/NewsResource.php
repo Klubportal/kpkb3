@@ -12,6 +12,7 @@ use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\Toggle;
+use Filament\Schemas\Components\Section;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
@@ -39,64 +40,95 @@ class NewsResource extends Resource
 
     public static function form(Schema $schema): Schema
     {
-        $components = [
-            TextInput::make('title')
-                ->label('Titel')
-                ->required()
-                ->live(onBlur: true)
-                ->afterStateUpdated(fn ($state, $set) => $set('slug', Str::slug($state))),
+        return $schema->components([
+            Section::make('Grundinformationen')
+                ->schema([
+                    TextInput::make('title')
+                        ->label('Titel')
+                        ->required()
+                        ->live(onBlur: true)
+                        ->afterStateUpdated(fn ($state, $set) => $set('slug', Str::slug($state)))
+                        ->columnSpanFull(),
 
-            TextInput::make('slug')
-                ->label('URL Slug')
-                ->required()
-                ->unique(ignoreRecord: true),
+                    TextInput::make('slug')
+                        ->label('URL Slug')
+                        ->required()
+                        ->unique(ignoreRecord: true)
+                        ->columnSpanFull(),
 
-            Textarea::make('excerpt')
-                ->label('Kurzbeschreibung')
-                ->rows(3)
-                ->maxLength(500),
-
-            RichEditor::make('content')
-                ->label('Inhalt')
-                ->columnSpanFull(),
-
-            FileUpload::make('featured_image')
-                ->label('Hauptbild')
-                ->image()
-                ->disk('public')
-                ->directory('news')
-                ->visibility('public')
-                ->imageEditor(),
-
-            Select::make('status')
-                ->label('Status')
-                ->options([
-                    'draft' => 'Entwurf',
-                    'published' => 'Veröffentlicht',
-                    'archived' => 'Archiviert',
+                    Textarea::make('excerpt')
+                        ->label('Kurzbeschreibung')
+                        ->rows(3)
+                        ->maxLength(500)
+                        ->columnSpanFull(),
                 ])
-                ->default('draft'),
+                ->columns(1),
 
-            DateTimePicker::make('published_at')
-                ->label('Veröffentlichungsdatum')
-                ->default(now()),
+            Section::make('Inhalt')
+                ->schema([
+                    RichEditor::make('content')
+                        ->label('Inhalt')
+                        ->toolbarButtons([
+                            'bold',
+                            'italic',
+                            'underline',
+                            'strike',
+                            'link',
+                            'h2',
+                            'h3',
+                            'bulletList',
+                            'orderedList',
+                            'blockquote',
+                            'undo',
+                            'redo',
+                        ])
+                        ->required()
+                        ->columnSpanFull(),
+                ])
+                ->columns(1),
 
-            Toggle::make('is_featured')
-                ->label('Als Featured markieren')
-                ->default(false),
-        ];
+            Section::make('Medien')
+                ->schema([
+                    FileUpload::make('featured_image')
+                        ->label('Hauptbild')
+                        ->image()
+                        ->disk('public')
+                        ->directory('news')
+                        ->visibility('public')
+                        ->imageEditor()
+                        ->imageEditorAspectRatios([
+                            '16:9',
+                            '4:3',
+                            '1:1',
+                        ])
+                        ->maxSize(5120)
+                        ->columnSpanFull(),
+                ])
+                ->columns(1),
 
-        // Prefer plugin component if available, else fall back to core TagsInput
-        if (class_exists('Filament\\Forms\\Components\\SpatieTagsInput')) {
-            $components[] = (\Filament\Forms\Components\SpatieTagsInput::make('tags'))
-                ->label('Tags')
-                ->type('news');
-        } else {
-            $components[] = (\Filament\Forms\Components\TagsInput::make('tags'))
-                ->label('Tags');
-        }
+            Section::make('Einstellungen')
+                ->schema([
+                    Select::make('status')
+                        ->label('Status')
+                        ->options([
+                            'draft' => 'Entwurf',
+                            'published' => 'Veröffentlicht',
+                            'archived' => 'Archiviert',
+                        ])
+                        ->default('draft')
+                        ->required(),
 
-        return $schema->components($components);
+                    DateTimePicker::make('published_at')
+                        ->label('Veröffentlichungsdatum')
+                        ->default(now())
+                        ->required(),
+
+                    Toggle::make('is_featured')
+                        ->label('Als Featured markieren')
+                        ->default(false),
+                ])
+                ->columns(2),
+        ]);
     }
 
     public static function table(Table $table): Table

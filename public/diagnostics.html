@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Filament Diagnostics</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 1200px; margin: 20px auto; padding: 20px; }
+        h1 { color: #333; }
+        .test { margin: 20px 0; padding: 15px; border: 1px solid #ddd; border-radius: 5px; }
+        .success { background: #d4edda; border-color: #c3e6cb; }
+        .error { background: #f8d7da; border-color: #f5c6cb; }
+        .warning { background: #fff3cd; border-color: #ffeeba; }
+        code { background: #f4f4f4; padding: 2px 6px; border-radius: 3px; }
+        pre { background: #f4f4f4; padding: 10px; border-radius: 5px; overflow-x: auto; }
+        .button { background: #007bff; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; margin: 5px; }
+        .button:hover { background: #0056b3; }
+    </style>
+</head>
+<body>
+    <h1>🔍 Filament Backend Diagnostics</h1>
+
+    <div class="test warning">
+        <h2>Schritt 1: Browser-Konsole überprüfen</h2>
+        <p>Öffnen Sie die Browser-Entwicklertools (F12) und gehen Sie zum <strong>Console</strong> Tab.</p>
+        <p>Suchen Sie nach JavaScript-Fehlern (rot markiert).</p>
+        <button class="button" onclick="checkConsole()">Console öffnen</button>
+    </div>
+
+    <div class="test warning">
+        <h2>Schritt 2: Network Tab überprüfen</h2>
+        <p>Im <strong>Network</strong> Tab der DevTools:</p>
+        <ol>
+            <li>Laden Sie die Seite neu</li>
+            <li>Suchen Sie nach fehlgeschlagenen Requests (rot markiert, Status 404/500)</li>
+            <li>Achten Sie besonders auf:
+                <ul>
+                    <li><code>/public/js/filament/forms/components/color-picker.js</code></li>
+                    <li><code>/public/js/filament/forms/components/file-upload.js</code></li>
+                    <li><code>/livewire/</code> Requests</li>
+                </ul>
+            </li>
+        </ol>
+        <button class="button" onclick="window.open('http://nknaprijed.localhost:8000/club/template-settings/1/edit', '_blank')">Seite öffnen</button>
+    </div>
+
+    <div class="test">
+        <h2>Schritt 3: Livewire Test</h2>
+        <p>Testen Sie, ob Livewire funktioniert:</p>
+        <button class="button" onclick="testLivewire()">Livewire Status testen</button>
+        <pre id="livewire-result">Klicken Sie auf "Livewire Status testen"</pre>
+    </div>
+
+    <div class="test">
+        <h2>Schritt 4: Asset-Pfade überprüfen</h2>
+        <p>Überprüfen Sie, ob die Filament-Assets erreichbar sind:</p>
+        <button class="button" onclick="testAssets()">Assets testen</button>
+        <pre id="asset-result">Klicken Sie auf "Assets testen"</pre>
+    </div>
+
+    <div class="test">
+        <h2>Schritt 5: Direkte Tests</h2>
+        <p>Testen Sie diese URLs direkt im Browser:</p>
+        <ul>
+            <li><a href="http://nknaprijed.localhost:8000/js/filament/forms/components/color-picker.js" target="_blank">ColorPicker JS</a></li>
+            <li><a href="http://nknaprijed.localhost:8000/js/filament/forms/components/file-upload.js" target="_blank">FileUpload JS</a></li>
+            <li><a href="http://nknaprijed.localhost:8000/css/filament/filament/app.css" target="_blank">Filament CSS</a></li>
+        </ul>
+        <p><strong>Erwartetes Ergebnis:</strong> JavaScript/CSS-Code sollte angezeigt werden, nicht 404</p>
+    </div>
+
+    <div class="test error">
+        <h2>⚠️ Häufige Probleme</h2>
+        <ul>
+            <li><strong>Assets nicht gefunden (404):</strong> Führen Sie <code>php artisan storage:link</code> aus</li>
+            <li><strong>Livewire funktioniert nicht:</strong> Überprüfen Sie <code>@livewireScripts</code> im Layout</li>
+            <li><strong>ColorPicker nicht klickbar:</strong> JavaScript-Fehler oder CSS-Konflikt</li>
+            <li><strong>Felder nicht editierbar:</strong> Formular ist möglicherweise disabled oder readonly</li>
+        </ul>
+    </div>
+
+    <div class="test">
+        <h2>Schritt 6: Element-Inspektor</h2>
+        <p>Rechtsklick auf ein ColorPicker-Feld → "Untersuchen" (Inspect)</p>
+        <p>Überprüfen Sie im HTML:</p>
+        <pre>&lt;input type="text" ... disabled&gt;  ← PROBLEM!
+&lt;input type="text" ... readonly&gt;  ← PROBLEM!
+&lt;input type="text" ...&gt;           ← OK!</pre>
+    </div>
+
+    <script>
+        function checkConsole() {
+            console.log('=== FILAMENT DIAGNOSTICS ===');
+            console.log('Wenn Sie diese Nachricht sehen, funktioniert JavaScript!');
+            console.log('Überprüfen Sie oben auf ROTE Fehlermeldungen.');
+            alert('Console wurde geöffnet! Schauen Sie in den DevTools (F12) nach Fehlern.');
+        }
+
+        function testLivewire() {
+            const result = document.getElementById('livewire-result');
+            result.textContent = 'Testing Livewire...';
+
+            if (typeof window.Livewire !== 'undefined') {
+                result.textContent = '✓ Livewire ist geladen!\nVersion: ' + (window.Livewire.version || 'Unknown');
+                result.parentElement.className = 'test success';
+            } else {
+                result.textContent = '✗ Livewire ist NICHT geladen!\nDies könnte das Problem sein.';
+                result.parentElement.className = 'test error';
+            }
+        }
+
+        async function testAssets() {
+            const result = document.getElementById('asset-result');
+            result.textContent = 'Testing assets...\n';
+
+            const assets = [
+                '/js/filament/forms/components/color-picker.js',
+                '/js/filament/forms/components/file-upload.js',
+                '/css/filament/filament/app.css'
+            ];
+
+            for (const asset of assets) {
+                try {
+                    const response = await fetch('http://nknaprijed.localhost:8000' + asset);
+                    const status = response.status;
+                    result.textContent += asset + ': ' + (status === 200 ? '✓ OK' : '✗ ' + status) + '\n';
+                } catch (e) {
+                    result.textContent += asset + ': ✗ ERROR - ' + e.message + '\n';
+                }
+            }
+        }
+
+        // Auto-test on page load
+        setTimeout(() => {
+            if (window.location.search.includes('autotest')) {
+                testLivewire();
+                testAssets();
+            }
+        }, 1000);
+    </script>
+</body>
+</html>

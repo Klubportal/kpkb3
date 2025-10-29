@@ -8,4 +8,12 @@ use Filament\Resources\Pages\CreateRecord;
 class CreateTemplate extends CreateRecord
 {
     protected static string $resource = TemplateResource::class;
+
+    protected function getFormActions(): array
+    {
+        return [
+            $this->getCreateFormAction(),
+            $this->getCancelFormAction(),
+        ];
+    }
 }

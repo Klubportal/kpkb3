@@ -25,7 +25,7 @@ if (-not $isAdmin) {
 }
 
 $hostsPath = "C:\Windows\System32\drivers\etc\hosts"
-$domain = "testclub.localhost"
+$domain = "nknaprijed.localhost"
 
 Write-Host "📝 hosts-Datei Pfad: $hostsPath" -ForegroundColor Gray
 Write-Host "🌐 Domain hinzufügen: $domain`n" -ForegroundColor Gray
@@ -44,7 +44,7 @@ if ($hostsContent -match [regex]::Escape($domain)) {
 
     Write-Host "✅ Domain '$domain' erfolgreich hinzugefügt!" -ForegroundColor Green
     Write-Host "`n📋 Neue hosts-Datei Einträge:" -ForegroundColor Cyan
-    Write-Host "127.0.0.1       testclub.localhost`n" -ForegroundColor White
+    Write-Host "127.0.0.1       nknaprijed.localhost`n" -ForegroundColor White
 }
 
 Write-Host "========================================" -ForegroundColor Cyan

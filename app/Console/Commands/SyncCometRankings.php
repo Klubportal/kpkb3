@@ -54,7 +54,7 @@ class SyncCometRankings extends Command
         $password = '3c6nR$dS';
 
         $competitions = $mysqli->query("
-            SELECT competitionFifaId, internationalName, ageCategoryName
+            SELECT competitionFifaId, internationalName, ageCategory, ageCategoryName
             FROM comet_club_competitions
             WHERE status = 'active'
         ")->fetch_all(MYSQLI_ASSOC);
@@ -102,6 +102,9 @@ class SyncCometRankings extends Command
 
                 $data = [
                     'competition_fifa_id' => $comp['competitionFifaId'],
+                    'international_competition_name' => $comp['internationalName'] ?? null,
+                    'age_category' => $comp['ageCategory'] ?? null,
+                    'age_category_name' => $comp['ageCategoryName'] ?? null,
                     'team_fifa_id' => $rank['teamFifaId'],
                     'international_team_name' => $teamName,
                     'team_image_logo' => $teamLogo,

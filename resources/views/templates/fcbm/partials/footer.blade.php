@@ -4,7 +4,7 @@
             <!-- Column 1: About -->
             <div>
                 @if($settings->logo)
-                    <img src="{{ asset('storage/' . $settings->logo) }}" alt="{{ $settings->website_name }}" class="h-16 w-auto mb-4 brightness-0 invert">
+                    <img src="{{ url('/storage/' . $settings->logo) }}" alt="{{ $settings->website_name }}" class="h-16 w-auto mb-4 brightness-0 invert">
                 @else
                     <div class="h-16 w-16 bg-white rounded-full flex items-center justify-center mb-4">
                         <span class="text-primary font-bold text-2xl">{{ substr($settings->website_name ?? 'FC', 0, 2) }}</span>

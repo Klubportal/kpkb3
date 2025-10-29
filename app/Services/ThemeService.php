@@ -14,6 +14,9 @@ namespace App\Services;
  * - dark_mode (Dunkel/Neon - Modern Dark Theme)
  * - classic_navy (Navy/Beige - Klassisch & Seriös)
  * - sport_red (Rot/Schwarz - Sportlich & Kraftvoll)
+ *
+ * WICHTIG: Menüstruktur ist für alle Themes einheitlich!
+ * Nur Farben, Layouts und Assets ändern sich pro Theme.
  */
 class ThemeService
 {

@@ -5,6 +5,7 @@ namespace App\Providers\Filament;
 use App\Models\Central\Tenant;
 use App\Models\Tenant\User;
 use App\Services\TenantMenuService;
+use App\Filament\Club\Pages\Senioren;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
@@ -135,6 +136,7 @@ class TenantPanelProvider extends PanelProvider
             ->discoverPages(in: app_path('Filament/Club/Pages'), for: 'App\\Filament\\Club\\Pages')
             ->pages([
                 Pages\Dashboard::class,
+                Senioren::class,
             ])
             ->discoverWidgets(in: app_path('Filament/Club/Widgets'), for: 'App\\Filament\\Club\\Widgets')
             ->widgets([

@@ -19,6 +19,8 @@ class TemplateSetting extends Model
         'header_text_color',
         'badge_bg_color',
         'badge_text_color',
+        'hero_bg_color',
+        'hero_text_color',
         'footer_bg_color',
         'footer_text_color',
         'text_color',

@@ -20,16 +20,20 @@
                     Home
                     <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-primary group-hover:w-full transition-all duration-300"></span>
                 </a>
+                <a href="/news" class="group relative header-text hover:text-primary dark:hover:text-primary font-semibold transition">
+                    News
+                    <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-primary group-hover:w-full transition-all duration-300"></span>
+                </a>
+                <a href="/seniori" class="group relative header-text hover:text-primary dark:hover:text-primary font-semibold transition">
+                    Senioren
+                    <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-primary group-hover:w-full transition-all duration-300"></span>
+                </a>
                 <a href="/raspored" class="group relative header-text hover:text-primary dark:hover:text-primary font-semibold transition">
                     Spielplan
                     <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-primary group-hover:w-full transition-all duration-300"></span>
                 </a>
                 <a href="/tablice" class="group relative header-text hover:text-primary dark:hover:text-primary font-semibold transition">
                     Tabelle
-                    <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-primary group-hover:w-full transition-all duration-300"></span>
-                </a>
-                <a href="/seniori" class="group relative header-text hover:text-primary dark:hover:text-primary font-semibold transition">
-                    Teams
                     <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-primary group-hover:w-full transition-all duration-300"></span>
                 </a>
                 <a href="/kontakt" class="group relative header-text hover:text-primary dark:hover:text-primary font-semibold transition">
@@ -53,9 +57,10 @@
     <div x-show="mobileMenuOpen" x-transition class="lg:hidden header-bg dark:bg-gray-900 border-t dark:border-gray-800">
         <div class="container mx-auto px-4 py-4 space-y-1">
             <a href="/" class="block py-3 px-4 header-text hover:bg-primary/10 dark:hover:bg-gray-800 hover:text-primary dark:hover:text-primary rounded-lg font-semibold transition">Home</a>
+            <a href="/news" class="block py-3 px-4 header-text hover:bg-primary/10 dark:hover:bg-gray-800 hover:text-primary dark:hover:text-primary rounded-lg font-semibold transition">News</a>
+            <a href="/seniori" class="block py-3 px-4 header-text hover:bg-primary/10 dark:hover:bg-gray-800 hover:text-primary dark:hover:text-primary rounded-lg font-semibold transition">Senioren</a>
             <a href="/raspored" class="block py-3 px-4 header-text hover:bg-primary/10 dark:hover:bg-gray-800 hover:text-primary dark:hover:text-primary rounded-lg font-semibold transition">Spielplan</a>
             <a href="/tablice" class="block py-3 px-4 header-text hover:bg-primary/10 dark:hover:bg-gray-800 hover:text-primary dark:hover:text-primary rounded-lg font-semibold transition">Tabelle</a>
-            <a href="/seniori" class="block py-3 px-4 header-text hover:bg-primary/10 dark:hover:bg-gray-800 hover:text-primary dark:hover:text-primary rounded-lg font-semibold transition">Teams</a>
             <a href="/kontakt" class="block py-3 px-4 header-text hover:bg-primary/10 dark:hover:bg-gray-800 hover:text-primary dark:hover:text-primary rounded-lg font-semibold transition">Kontakt</a>
         </div>
     </div>

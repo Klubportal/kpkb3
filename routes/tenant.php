@@ -167,7 +167,25 @@ Route::get('/tablice', function () {
 
 Route::get('/seniori', function () {
     $settings = \App\Models\Tenant\TemplateSetting::current();
-    return view('templates.kp.seniori', compact('settings'));
+
+    // Load Comet data for Senioren page - ONLY SENIORS competition data
+    $matches = \App\Models\Comet\CometMatch::where('age_category', 'SENIORS')
+        ->where('date_time_local', '>=', now())
+        ->orderBy('date_time_local', 'asc')
+        ->take(5)
+        ->get();
+
+    $rankings = \App\Models\Comet\CometRanking::where('age_category', 'SENIORS')
+        ->orderBy('position', 'asc')
+        ->take(10)
+        ->get();
+
+    $topScorers = \App\Models\Comet\CometTopScorer::where('age_category', 'SENIORS')
+        ->orderBy('goals', 'desc')
+        ->take(10)
+        ->get();
+
+    return view('templates.' . ($settings->template ?? 'kp') . '.seniori', compact('settings', 'matches', 'rankings', 'topScorers'));
 })->name('seniori');
 
 Route::get('/skola-nogometa', function () {

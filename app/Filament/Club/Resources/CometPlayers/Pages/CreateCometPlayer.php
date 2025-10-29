@@ -10,6 +10,14 @@ class CreateCometPlayer extends CreateRecord
 {
     protected static string $resource = CometPlayerResource::class;
 
+    protected function getFormActions(): array
+    {
+        return [
+            $this->getCreateFormAction(),
+            $this->getCancelFormAction(),
+        ];
+    }
+
     protected function handleRecordCreation(array $data): \Illuminate\Database\Eloquent\Model
     {
         // Fields that belong to club_players table

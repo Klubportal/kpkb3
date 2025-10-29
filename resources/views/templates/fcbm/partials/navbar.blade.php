@@ -32,7 +32,7 @@
                 <!-- Logo -->
                 <a href="{{ url('/') }}" class="flex items-center space-x-3">
                     @if($settings->logo)
-                        <img src="{{ asset('storage/' . $settings->logo) }}" alt="{{ $settings->website_name }}" class="h-16 w-auto">
+                        <img src="{{ url('/storage/' . $settings->logo) }}" alt="{{ $settings->website_name }}" class="h-16 w-auto">
                     @else
                         <div class="h-16 w-16 bg-primary rounded-full flex items-center justify-center">
                             <span class="text-white font-bold text-2xl">{{ substr($settings->website_name ?? 'FC', 0, 2) }}</span>
@@ -45,9 +45,9 @@
                 <div class="hidden lg:flex items-center space-x-8">
                     <a href="{{ url('/') }}" class="text-header hover:text-primary transition font-semibold">Home</a>
                     <a href="{{ url('/news') }}" class="text-header hover:text-primary transition font-semibold">News</a>
-                    <a href="#mannschaft" class="text-header hover:text-primary transition font-semibold">Mannschaft</a>
-                    <a href="#spielplan" class="text-header hover:text-primary transition font-semibold">Spielplan</a>
-                    <a href="#tabelle" class="text-header hover:text-primary transition font-semibold">Tabelle</a>
+                    <a href="{{ url('/seniori') }}" class="text-header hover:text-primary transition font-semibold">Senioren</a>
+                    <a href="{{ url('/spielplan') }}" class="text-header hover:text-primary transition font-semibold">Spielplan</a>
+                    <a href="{{ url('/tabelle') }}" class="text-header hover:text-primary transition font-semibold">Tabelle</a>
                     <a href="#tickets" class="bg-primary text-white px-6 py-2 rounded-full hover:opacity-90 transition font-semibold">Tickets</a>
                 </div>
 
@@ -65,9 +65,9 @@
                 <div class="flex flex-col space-y-4">
                     <a href="{{ url('/') }}" class="text-header hover:text-primary transition font-semibold">Home</a>
                     <a href="{{ url('/news') }}" class="text-header hover:text-primary transition font-semibold">News</a>
-                    <a href="#mannschaft" class="text-header hover:text-primary transition font-semibold">Mannschaft</a>
-                    <a href="#spielplan" class="text-header hover:text-primary transition font-semibold">Spielplan</a>
-                    <a href="#tabelle" class="text-header hover:text-primary transition font-semibold">Tabelle</a>
+                    <a href="{{ url('/seniori') }}" class="text-header hover:text-primary transition font-semibold">Senioren</a>
+                    <a href="{{ url('/spielplan') }}" class="text-header hover:text-primary transition font-semibold">Spielplan</a>
+                    <a href="{{ url('/tabelle') }}" class="text-header hover:text-primary transition font-semibold">Tabelle</a>
                     <a href="#tickets" class="bg-primary text-white px-6 py-2 rounded-full hover:opacity-90 transition font-semibold inline-block text-center">Tickets</a>
                 </div>
             </div>

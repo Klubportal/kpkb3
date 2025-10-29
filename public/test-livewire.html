@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Livewire & Alpine Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+        }
+        .test-box {
+            border: 2px solid #ccc;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 5px;
+        }
+        .success { border-color: green; background: #e8f5e9; }
+        .error { border-color: red; background: #ffebee; }
+        .warning { border-color: orange; background: #fff3e0; }
+        h2 { margin-top: 30px; }
+        code {
+            background: #f5f5f5;
+            padding: 2px 6px;
+            border-radius: 3px;
+        }
+        .instruction {
+            background: #e3f2fd;
+            padding: 15px;
+            margin: 20px 0;
+            border-left: 4px solid #2196f3;
+        }
+    </style>
+</head>
+<body>
+    <h1>🔍 Filament Livewire & Alpine.js Diagnose</h1>
+
+    <div class="instruction">
+        <h3>📋 Anweisungen:</h3>
+        <ol>
+            <li>Öffnen Sie die Template-Settings Seite in einem neuen Tab:
+                <br><strong>http://nknaprijed.localhost:8000/club/template-settings/1/edit</strong>
+            </li>
+            <li>Drücken Sie <code>F12</code> um die Developer Tools zu öffnen</li>
+            <li>Gehen Sie zum <strong>Console</strong> Tab</li>
+            <li>Kopieren Sie die unten stehenden Tests in die Console</li>
+            <li>Notieren Sie die Ergebnisse</li>
+        </ol>
+    </div>
+
+    <h2>Test 1: Alpine.js</h2>
+    <div class="test-box">
+        <p>In der Browser-Console eingeben:</p>
+        <code>typeof Alpine</code>
+        <p><strong>Erwartetes Ergebnis:</strong> "object"</p>
+        <p><strong>Wenn "undefined":</strong> Alpine.js ist nicht geladen! Filament funktioniert nicht ohne Alpine.</p>
+    </div>
+
+    <h2>Test 2: Livewire</h2>
+    <div class="test-box">
+        <p>In der Browser-Console eingeben:</p>
+        <code>typeof Livewire</code>
+        <p><strong>Erwartetes Ergebnis:</strong> "object"</p>
+        <p><strong>Wenn "undefined":</strong> Livewire ist nicht geladen! Filament-Forms funktionieren nicht.</p>
+    </div>
+
+    <h2>Test 3: Livewire Components</h2>
+    <div class="test-box">
+        <p>In der Browser-Console eingeben:</p>
+        <code>Livewire.all()</code>
+        <p><strong>Erwartetes Ergebnis:</strong> Ein Array mit mindestens 1 Component</p>
+        <p><strong>Wenn leeres Array []:</strong> Keine Livewire-Komponente wurde initialisiert!</p>
+    </div>
+
+    <h2>Test 4: Form Inputs im DOM</h2>
+    <div class="test-box">
+        <p>In der Browser-Console eingeben:</p>
+        <code>document.querySelectorAll('input').length</code>
+        <p><strong>Erwartetes Ergebnis:</strong> Eine Zahl > 0 (z.B. 20-40 Inputs)</p>
+        <p><strong>Wenn 0:</strong> Das Form wird überhaupt nicht gerendert!</p>
+    </div>
+
+    <h2>Test 5: ColorPicker im DOM</h2>
+    <div class="test-box">
+        <p>In der Browser-Console eingeben:</p>
+        <code>document.querySelectorAll('[wire\\:model*="color"]').length</code>
+        <p><strong>Erwartetes Ergebnis:</strong> Eine Zahl > 0 (sollte ~12 sein für alle ColorPicker)</p>
+        <p><strong>Wenn 0:</strong> ColorPicker-Felder werden nicht gerendert!</p>
+    </div>
+
+    <h2>Test 6: JavaScript Fehler</h2>
+    <div class="test-box">
+        <p>Im <strong>Console</strong> Tab nach roten Fehlermeldungen suchen!</p>
+        <p>Häufige Fehler:</p>
+        <ul>
+            <li><code>Alpine is not defined</code> → Alpine.js fehlt</li>
+            <li><code>Livewire is not defined</code> → Livewire fehlt</li>
+            <li><code>Cannot read property 'wire' of undefined</code> → Livewire nicht initialisiert</li>
+            <li><code>404</code> bei <code>.js</code> Dateien → Assets nicht kompiliert</li>
+        </ul>
+    </div>
+
+    <h2>Test 7: Network Tab</h2>
+    <div class="test-box">
+        <p>Gehen Sie zum <strong>Network</strong> Tab in den Developer Tools</p>
+        <p>Laden Sie die Seite neu (<code>Ctrl+R</code>)</p>
+        <p>Suchen Sie nach:</p>
+        <ul>
+            <li><code>@livewire/livewire/dist/livewire.esm.js</code> → sollte Status 200 haben</li>
+            <li><code>alpine.js</code> → sollte Status 200 haben</li>
+            <li><code>app.js</code> oder <code>filament.js</code> → sollte Status 200 haben</li>
+        </ul>
+        <p><strong>Wenn 404-Fehler:</strong> Assets wurden nicht korrekt gebaut!</p>
+    </div>
+
+    <h2>Test 8: Page Source Check</h2>
+    <div class="test-box">
+        <p>Rechtsklick auf die Seite → <strong>"Seitenquelltext anzeigen"</strong></p>
+        <p>Suchen Sie nach (Ctrl+F):</p>
+        <ul>
+            <li><code>@livewireScripts</code> → sollte NICHT gefunden werden (sollte kompiliert sein)</li>
+            <li><code>livewire.js</code> → sollte gefunden werden</li>
+            <li><code>wire:model</code> → sollte mehrfach gefunden werden</li>
+            <li><code>x-data</code> → sollte mehrfach gefunden werden (Alpine.js)</li>
+        </ul>
+    </div>
+
+    <div class="instruction" style="background: #fff3e0; border-color: orange; margin-top: 40px;">
+        <h3>⚠️ WICHTIG: Bitte teilen Sie mir die Ergebnisse mit!</h3>
+        <p>Kopieren Sie die Ausgaben aller Tests und senden Sie mir:</p>
+        <ol>
+            <li>Test 1 Ergebnis: <code>typeof Alpine</code> = ?</li>
+            <li>Test 2 Ergebnis: <code>typeof Livewire</code> = ?</li>
+            <li>Test 3 Ergebnis: <code>Livewire.all().length</code> = ?</li>
+            <li>Test 4 Ergebnis: <code>document.querySelectorAll('input').length</code> = ?</li>
+            <li>Gibt es rote Fehler in der Console? Wenn ja, welche?</li>
+            <li>Gibt es 404-Fehler im Network Tab? Wenn ja, welche Dateien?</li>
+        </ol>
+    </div>
+
+</body>
+</html>
