@@ -17,7 +17,7 @@ class PreventTenancyOnCentralRoutes
     {
         // ⚠️ WICHTIG: Blockiere Central-Panel auf Tenant-Domains komplett!
         $host = $request->getHost();
-        $centralDomains = ['localhost', '127.0.0.1', 'admin.klubportal.com'];
+        $centralDomains = ['localhost', '127.0.0.1', 'admin.klubportal.com', 'klubbase.com', 'admin.klubbase.com', '46.224.7.207'];
 
         if (!in_array($host, $centralDomains)) {
             // Wir sind auf einer Tenant-Domain, aber versuchen auf Central-Panel zuzugreifen
