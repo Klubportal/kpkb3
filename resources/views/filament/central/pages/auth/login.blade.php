@@ -22,15 +22,15 @@
                 {{-- Logo Section --}}
                 <div class="text-center mb-8">
                     @if($logo)
-                    <div class="flex justify-center mb-3">
+                    <div class="flex justify-center" style="margin-bottom: 15px;">
                         <div class="relative">
                             <div class="absolute inset-0 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full blur-2xl opacity-20 animate-pulse"></div>
-                            <img src="{{ $logo }}" alt="{{ $siteName }}" class="relative h-32 w-auto object-contain drop-shadow-2xl">
+                            <img src="{{ $logo }}" alt="{{ $siteName }}" class="relative h-40 w-auto object-contain drop-shadow-2xl">
                         </div>
                     </div>
                     @endif
 
-                    <h1 class="text-4xl font-bold bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 bg-clip-text text-transparent mb-2 mt-2">
+                    <h1 class="text-2xl font-bold bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 bg-clip-text text-transparent mb-2">
                         {{ $siteName }}
                     </h1>
                     <p class="text-sm text-gray-600 dark:text-gray-400">
