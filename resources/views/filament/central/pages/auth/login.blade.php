@@ -22,7 +22,7 @@
                 {{-- Logo Section --}}
                 <div class="text-center mb-8">
                     @if($logo)
-                    <div class="flex justify-center" style="margin-bottom: 15px;">
+                    <div class="flex justify-center" style="margin-bottom: 5px;">
                         <div class="relative">
                             <div class="absolute inset-0 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full blur-2xl opacity-20 animate-pulse"></div>
                             <img src="{{ $logo }}" alt="{{ $siteName }}" class="relative h-40 w-auto object-contain drop-shadow-2xl">
